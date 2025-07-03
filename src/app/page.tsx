@@ -109,7 +109,7 @@ function DomeDetailsModal({ open, onClose, dome }: { open: boolean; onClose: () 
           )}
           {tab === 'gallery' && (
             <div className="flex gap-2">
-              <img src={dome.img} alt={dome.title} className="rounded-lg w-32 h-24 object-cover" />
+              <Image src={dome.img} alt={dome.title} className="rounded-lg w-32 h-24 object-cover" width={128} height={96} />
               {/* Add more images if available */}
             </div>
           )}
@@ -174,20 +174,7 @@ export default function Home() {
     "/main/assos/img-2.jpg",
     "/main/assos/img-3.jpg"
   ];
-
-  // Slide titles for each nature setting
-  const slideTitles = [
-    "Sustainable Living Reimagined",
-    "Coastal Paradise",
-    "Riverside Sanctuary", 
-    "Mountain Retreat",
-    "Forest Haven",
-    "Desert Oasis",
-    "Alpine Wonderland",
-    "Mediterranean Coast",
-    "Tropical Paradise",
-    "Lakeside Serenity"
-  ];
+ 
 
   // Auto-rotate background images
   useEffect(() => {
@@ -517,7 +504,7 @@ export default function Home() {
           <span className={`absolute z-10 top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow ${card.badgeColor} animate-pulse`}>{card.badge}</span>
           {/* Icon */}
         
-          <img src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" />
+          <Image src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" width={320} height={160} />
           <h3 className="font-bold text-xl text-gray-900 mb-1 mt-2">{card.title}</h3>
           <div className="text-base text-gray-500 mb-1">Starting from {card.price}</div>
           {/* Feature list */}
@@ -834,17 +821,17 @@ export default function Home() {
           </div>
           
           <h3 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white text-center mb-4 sm:mb-6 drop-shadow-2xl leading-tight">
-            "Domed in Nature, 
-            <span className="block text-lime-300">Rooted in Comfort"</span>
+            Domed in Nature, 
+            <span className="block text-lime-300">Rooted in Comfort</span>
           </h3>
           
           <p className="text-white/95 text-center mb-5 sm:mb-8 text-base xs:text-lg sm:text-xl leading-relaxed max-w-3xl drop-shadow-lg">
-            Your Roomydomy home isn't just built on the land – it's rooted in it. From foundation to finish, every element is designed to create lasting comfort while maintaining the delicate balance of your natural surroundings.
+            Your Roomydomy home is not just built on the land – it is rooted in it. From foundation to finish, every element is designed to create lasting comfort while maintaining the delicate balance of your natural surroundings.
           </p>
           
           <div className="bg-white/25 backdrop-blur-xl rounded-2xl px-4 sm:px-8 py-4 sm:py-6 mb-6 sm:mb-8 text-white text-center font-medium border border-white/40 shadow-xl w-full">
             <div className="text-lg sm:text-xl font-bold mb-1 sm:mb-2 text-lime-200">Choose Roomydomy</div>
-            <div className="text-white/90 text-sm sm:text-base leading-relaxed">Where every sunrise reminds you that you're not just living in a house, you're living in harmony with the world around you.</div>
+            <div className="text-white/90 text-sm sm:text-base leading-relaxed">Where every sunrise reminds you that you are not just living in a house, you are living in harmony with the world around you.</div>
           </div>
           
           <p className="text-white/95 text-center mb-6 sm:mb-10 text-base xs:text-lg sm:text-xl leading-relaxed max-w-3xl drop-shadow-lg">
@@ -884,11 +871,11 @@ export default function Home() {
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
                 </svg>
               </div>
-              <p className="text-gray-700 text-lg leading-relaxed font-medium">Our EcoDome has transformed our lives. We're saving over 70% on energy costs, and the natural light is incredible. Best decision we ever made!</p>
+              <p className="text-gray-700 text-lg leading-relaxed font-medium">Our EcoDome has transformed our lives. We are saving over 70% on energy costs, and the natural light is incredible. Best decision we ever made!</p>
             </div>
             
             <div className="flex items-center gap-4 mt-auto">
-              <img src="/team/testi-01.jpg" alt="Sarah Johnson" className="w-14 h-14 rounded-full object-cover ring-4 ring-green-100" />
+              <Image src="/team/testi-01.jpg" alt="Sarah Johnson" className="w-14 h-14 rounded-full object-cover ring-4 ring-green-100" width={56} height={56} />
               <div>
                 <div className="font-bold text-gray-900 text-lg">Sarah Johnson</div>
                 <div className="text-green-600 font-medium">Colorado</div>
@@ -912,11 +899,11 @@ export default function Home() {
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
                 </svg>
               </div>
-              <p className="text-gray-700 text-lg leading-relaxed font-medium">We've lived in our dome for 2 years now. The customizability was perfect - we added the solar pergola and natural pool. It's like living in a resort!</p>
+              <p className="text-gray-700 text-lg leading-relaxed font-medium">We have lived in our dome for 2 years now. The customizability was perfect - we added the solar pergola and natural pool. It is like living in a resort!</p>
             </div>
             
             <div className="flex items-center gap-4 mt-auto">
-              <img src="/team/testi-02.jpg" alt="Michael & Emma Davis" className="w-14 h-14 rounded-full object-cover ring-4 ring-lime-100" />
+              <Image src="/team/testi-02.jpg" alt="Michael & Emma Davis" className="w-14 h-14 rounded-full object-cover ring-4 ring-lime-100" width={56} height={56} />
               <div>
                 <div className="font-bold text-gray-900 text-lg">Michael & Emma Davis</div>
                 <div className="text-green-600 font-medium">Oregon</div>
@@ -944,7 +931,7 @@ export default function Home() {
             </div>
             
             <div className="flex items-center gap-4 mt-auto">
-              <img src="/team/testi-03.jpg" alt="Robert Chen" className="w-14 h-14 rounded-full object-cover ring-4 ring-green-100" />
+              <Image src="/team/testi-03.jpg" alt="Robert Chen" className="w-14 h-14 rounded-full object-cover ring-4 ring-green-100" width={56} height={56} />
               <div>
                 <div className="font-bold text-gray-900 text-lg">Robert Chen</div>
                 <div className="text-green-600 font-medium">Washington</div>
@@ -1050,13 +1037,13 @@ export default function Home() {
               className="flex transition-transform duration-500"
               style={{ transform: `translateX(-${(carouselIndex * (100 / visibleCards))}%)` }}
             >
-              {domes.map((dome, idx) => (
+              {domes.map((dome) => (
                 <div
                   key={dome.title}
                   className={`bg-white rounded-xl shadow p-4 flex flex-col border border-gray-100 relative transition-transform duration-200 group min-w-0${visibleCards === 1 ? '' : ' mx-2'}`}
                   style={{ flex: `0 0 ${100 / visibleCards}%`, maxWidth: `${100 / visibleCards}%` }}
                 >
-                  <img src={dome.img} alt={dome.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" />
+                  <Image src={dome.img} alt={dome.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" width={320} height={160} />
                   <span className="absolute top-4 right-4 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow m-[3px]">Options</span>
                   <div className="text-sm text-gray-500 mb-1">{dome.size} · {dome.people}</div>
                   <h3 className="font-bold text-xl text-gray-900 mb-1">{dome.title}</h3>
@@ -1124,13 +1111,13 @@ export default function Home() {
               className="flex transition-transform duration-500"
               style={{ transform: `translateX(-${(envCarouselIndex * (100 / envVisibleCards))}%)` }}
             >
-              {envDomes.map((card, idx) => (
+              {envDomes.map((card) => (
                 <div
                   key={card.title}
                   className={`bg-white rounded-xl shadow p-4 flex flex-col border border-gray-100 relative transition-transform duration-200 group min-w-0${envVisibleCards === 1 ? '' : ' mx-2'}`}
                   style={{ flex: `0 0 ${100 / envVisibleCards}%`, maxWidth: `${100 / envVisibleCards}%` }}
                 >
-                  <img src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3" />
+                  <Image src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3" width={320} height={160} />
                   <span className={card.badgeClass + ' m-[3px]'}>{card.badge}</span>
                   <div className="text-sm text-gray-500 mb-1 flex items-center gap-1">{card.icon}{card.location}</div>
                   <h3 className="font-bold text-xl text-gray-900 mb-1">{card.title}</h3>
@@ -1279,7 +1266,7 @@ export default function Home() {
               <span className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow ${card.badgeColor} animate-pulse`}>{card.badge}</span>
               {/* Icon */}
           
-              <img src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" />
+              <Image src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" width={320} height={160} />
               <h3 className="font-bold text-xl text-gray-900 mb-1 mt-2">{card.title}</h3>
               <div className="text-base text-gray-500 mb-1">Starting from {card.price}</div>
               {/* Feature list */}
@@ -1332,7 +1319,7 @@ export default function Home() {
             { src: "/main/domy/d7/img-2.jpg", title: "Dome Interior" },
             { src: "/main/domy/d9/img-1.jpg", title: "Family Dome" },
             { src: "/main/domy/d10/img-1.jpg", title: "Grand Dome" },
-          ].map((img, idx) => (
+          ].map((img) => (
             <div
               key={img.src}
               className="relative group rounded-2xl overflow-hidden shadow-lg bg-white border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
@@ -1340,9 +1327,11 @@ export default function Home() {
               tabIndex={0}
               aria-label={`View ${img.title}`}
             >
-              <img
+              <Image
                 src={img.src}
                 alt={img.title}
+                width={320}
+                height={224}
                 className="object-cover w-full h-56 transition-transform duration-300 group-hover:scale-105 group-hover:brightness-90"
               />
               {/* Overlay on hover */}
@@ -1388,13 +1377,13 @@ export default function Home() {
               className="flex transition-transform duration-500"
               style={{ transform: `translateX(-${(availableCarouselIndex * (100 / availableVisibleCards))}%)` }}
             >
-              {availableLocations.map((card, idx) => (
+              {availableLocations.map((card) => (
                 <div
                   key={card.title}
                   className={`bg-white rounded-xl shadow p-4 flex flex-col border border-gray-100 relative transition-transform duration-200 group min-w-0${availableVisibleCards === 1 ? '' : ' mx-2'}`}
                   style={{ flex: `0 0 ${100 / availableVisibleCards}%`, maxWidth: `${100 / availableVisibleCards}%` }}
                 >
-                  <img src={card.img} alt={card.title} className="rounded-lg h-32 w-full object-cover mb-3" />
+                  <Image src={card.img} alt={card.title} className="rounded-lg h-32 w-full object-cover mb-3" width={320} height={128} />
                   <span className={card.badgeClass}>{card.badge}</span>
                   <div className="font-bold text-xl text-gray-900 mb-1">{card.title}</div>
                   <div className="text-sm text-gray-500 mb-1 flex items-center gap-1">{card.location}</div>
@@ -1423,7 +1412,7 @@ export default function Home() {
           </div>
         </div>
         <div className="text-gray-500 text-base text-center mb-4">
-          Don't see your preferred location? We're constantly expanding our available sites.
+          Don not see your preferred location? We are constantly expanding our available sites.
         </div>
         <button className="bg-green-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Request a New Location</button>
       </section>
