@@ -15,46 +15,75 @@ interface Dome {
 
 // Modal component for dome details
 function DomeDetailsModal({ open, onClose, dome }: { open: boolean; onClose: () => void; dome: Dome | null }) {
-  const [tab, setTab] = useState<'overview' | 'features' | 'gallery'>('overview');
-  const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: boolean }>({});
+  const [tab, setTab] = useState('overview');
+  const [layoutTab, setLayoutTab] = useState('luxury');
+  if (!open || !dome) return null;
 
-  // Customization options (static for demo, can be dynamic)
-  const options = [
+  // Example construction specs (replace with real data as needed)
+  const constructionSpecs = [
+    { label: 'Foundation', value: 'Reinforced concrete slab with vapor barrier' },
+    { label: 'Structure', value: 'Engineered steel frame with dome shell' },
+    { label: 'Insulation', value: 'Spray foam R-30 walls, R-50 roof' },
+    { label: 'Roofing', value: 'Standing seam metal roof with 50-year warranty' },
+    { label: 'Windows', value: 'Triple-pane low-E glass with argon fill' },
+    { label: 'Timeline', value: '16-22 weeks' },
+  ];
+
+  const keyFeatures = [
+    '2 bedrooms on bottom level',
+    '2 bedrooms on top level',
+    'Spacious kitchen',
+    'Large living room',
+    '2 bathrooms (one per level)',
+  ];
+
+  // Layouts data
+  const layouts = [
     {
-      group: 'Decks',
-      items: [
-        { key: 'mediumDeck', label: 'Medium Deck', desc: '200 sq ft wooden deck with eco-friendly composite material', price: 14000 },
-        { key: 'largeDeck', label: 'Large Deck', desc: '350 sq ft wooden deck with railing and steps', price: 22000 },
-        { key: 'premiumDeck', label: 'Premium Deck', desc: '450 sq ft premium deck with integrated seating and pergola', price: 32000 },
+      key: 'luxury',
+      name: 'Luxury Family',
+      subtitle: 'Premium family living with all amenities',
+      img: '/plan/plan-1.jpg',
+      size: '2000 sq ft',
+      people: '6-8 people',
+      roomConfig: [
+        { icon: '🏡', label: 'Ground: 2 Bedrooms + Living' },
+        { icon: '🏡', label: 'Upper: 2 Bedrooms + Loft' },
+      ],
+      features: [
+        'Four full bedrooms',
+        'Multiple living areas',
+        'Large kitchen with island',
+        'Home office/study',
+        'Entertainment loft',
       ],
     },
     {
-      group: 'Pergolas',
-      items: [
-        { key: 'standardPergola', label: 'Standard Pergola', desc: '200 sq ft wooden pergola with retractable shade', price: 12500 },
-        { key: 'deluxePergola', label: 'Deluxe Pergola', desc: 'Solar pergola with integrated lighting and speakers', price: 25000 },
+      key: 'executive',
+      name: 'Executive Retreat',
+      subtitle: 'Luxury retreat with private suites',
+      img: '/plan/plan-2.jpg', // Replace with your 3D plan image
+      size: '2000 sq ft',
+      people: '4-6 people',
+      roomConfig: [
+        { icon: '🏡', label: 'Ground: 1 Suite + Living' },
+        { icon: '🏡', label: 'Upper: 2 Suites + Lounge' },
       ],
-    },
-    {
-      group: 'Outdoor Features',
-      items: [
-        { key: 'mediumPool', label: 'Medium Pool', desc: '12\' diameter soaking pool with natural filtration', price: 35000 },
-        { key: 'outdoorKitchen', label: 'Outdoor Kitchen', desc: 'Complete outdoor kitchen with grill, sink and refrigerator', price: 18500 },
-        { key: 'firepitLounge', label: 'Firepit Lounge', desc: 'Natural gas firepit with surrounding seating', price: 9500 },
-        { key: 'zenGarden', label: 'Zen Garden', desc: 'Japanese-inspired garden with water feature', price: 7800 },
+      features: [
+        'Three private suites',
+        'Open concept living',
+        'Chef\'s kitchen',
+        'Private lounge',
+        'Spa bathroom',
       ],
     },
   ];
+  const selectedLayout = layouts.find(l => l.key === layoutTab) || layouts[0];
 
-  // Calculate total price
   const basePrice = dome ? Number(dome.price.replace(/[^\d.]/g, '')) : 0;
-  const selectedTotal = options.flatMap(g => g.items).reduce((sum, item) => selectedOptions[item.key] ? sum + item.price : sum, 0);
-  const totalPrice = basePrice + selectedTotal;
-  const deposit = 2500;
 
-  if (!open || !dome) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-999 flex items-center justify-center">
       {/* Overlay */}
       <div
         className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
@@ -63,95 +92,592 @@ function DomeDetailsModal({ open, onClose, dome }: { open: boolean; onClose: () 
       />
       {/* Modal Content */}
       <div
-        className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-0 relative animate-fade-in flex flex-col md:flex-row z-50"
-        onClick={e => e.stopPropagation()}
+        className="bg-white rounded-2xl shadow-2xl p-0 relative animate-fade-in flex flex-col z-50"
+        style={{
+          maxWidth: '80vw',
+          maxHeight: '80vh',
+          width: '80vw',
+          height: 'auto',
+          margin: '100px auto',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+        }}
       >
-        {/* Left: Tabs and Content */}
-        <div className="flex-1 p-8 min-w-[320px]">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-gray-400 hover:text-green-700 text-2xl font-bold focus:outline-none"
-            aria-label="Close details"
-          >
-            ×
-          </button>
-          {/* Tabs */}
-          <div className="flex gap-2 mb-6 border-b">
-            <button className={`px-4 py-2 font-semibold ${tab === 'overview' ? 'border-b-2 border-green-700 text-green-700' : 'text-gray-500'}`} onClick={() => setTab('overview')}>Overview</button>
-            <button className={`px-4 py-2 font-semibold ${tab === 'features' ? 'border-b-2 border-green-700 text-green-700' : 'text-gray-500'}`} onClick={() => setTab('features')}>Features</button>
-            <button className={`px-4 py-2 font-semibold ${tab === 'gallery' ? 'border-b-2 border-green-700 text-green-700' : 'text-gray-500'}`} onClick={() => setTab('gallery')}>Gallery</button>
+        {/* Title and Close */}
+        <div className="flex items-start justify-between px-8 pt-8 pb-2">
+          <h2 className="text-2xl font-extrabold text-gray-900 mb-2">{dome.title}</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-green-700 text-2xl font-bold focus:outline-none ml-auto" aria-label="Close details">×</button>
           </div>
-          {/* Tab Content */}
-          {tab === 'overview' && (
-            <div>
-              <h3 className="text-2xl font-extrabold text-green-800 mb-2">{dome.title}</h3>
-              <div className="text-gray-600 mb-2">{dome.size} · {dome.people}</div>
-              <div className="text-base text-gray-700 mb-3">{dome.description}</div>
-              <div className="bg-green-50 rounded p-3 mb-3 text-green-800 text-sm font-medium">A Sustainable Living Experience</div>
-              <ul className="text-gray-600 text-sm space-y-1 mb-4">
-                <li>🌿 Open concept living area</li>
-                <li>🍳 Full kitchen</li>
-                <li>🛁 One bathroom</li>
-                <li>👨‍👩‍👧‍👦 Perfect for families</li>
-              </ul>
+        {/* Main Row: Image + Description/Features */}
+        <div className="flex flex-col md:flex-row gap-8 px-8">
+          {/* Image with price tag */}
+          <div className="flex-1 min-w-[280px] relative">
+            <Image src={dome.img} alt={dome.title} className="rounded-xl w-full h-64 object-cover mb-2" />
+            <div className="absolute left-4 bottom-4 bg-gray-700 text-white text-sm font-semibold rounded px-4 py-1 shadow">Starting from {dome.price}</div>
             </div>
-          )}
-          {tab === 'features' && (
-            <div>
-              <div className="whitespace-pre-line text-gray-700 mb-3">{dome.features}</div>
-              <ul className="list-disc pl-5 text-gray-600 text-sm">
-                <li>Solar energy integration</li>
-                <li>Rainwater collection system</li>
-                <li>Eco-friendly materials</li>
-                <li>Customizable add-ons</li>
-              </ul>
-            </div>
-          )}
-          {tab === 'gallery' && (
-            <div className="flex gap-2">
-              <Image src={dome.img} alt={dome.title} className="rounded-lg w-32 h-24 object-cover" width={128} height={96} />
-              {/* Add more images if available */}
-            </div>
-          )}
-        </div>
-        {/* Right: Customization & Summary */}
-        <div className="w-full md:w-96 bg-gray-50 border-l border-gray-200 p-6 flex flex-col gap-4">
-          <div className="font-bold text-lg mb-2 text-green-900">Base Model <span className="float-right text-green-700 font-extrabold">${basePrice.toLocaleString()}</span></div>
-          <div className="font-semibold text-gray-700 mb-2">Customize Your Dome</div>
-          <div className="overflow-y-auto max-h-72 pr-2">
-            {options.map(group => (
-              <div key={group.group} className="mb-4">
-                <div className="font-semibold text-gray-600 mb-1">{group.group}</div>
-                {group.items.map(item => (
-                  <label key={item.key} className="flex items-start gap-2 mb-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={!!selectedOptions[item.key]}
-                      onChange={() => setSelectedOptions(prev => ({ ...prev, [item.key]: !prev[item.key] }))}
-                      className="mt-1 accent-green-700"
-                    />
-                    <span className="flex-1">
-                      <span className="font-medium text-gray-800">{item.label}</span>
-                      <span className="block text-xs text-gray-500">{item.desc}</span>
-                    </span>
-                    <span className="font-semibold text-gray-700">${item.price.toLocaleString()}</span>
-                  </label>
+          {/* Description and Key Features */}
+          <div className="flex-1 flex flex-col gap-4">
+            <div className="text-gray-700 text-base mb-2">{dome.description}</div>
+            <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+              <div className="font-bold text-xl text-gray-900 mb-2">Key Features</div>
+              <ul className="space-y-2">
+                {keyFeatures.map((f, i) => (
+                  <li key={i} className="flex items-start gap-2 text-base text-gray-800"><span className="text-green-500 mt-1">✓</span> {f}</li>
                 ))}
+              </ul>
+            </div>
+            </div>
+        </div>
+        {/* Tab Bar (functional) */}
+        <div className="flex gap-1 overflow-x-auto min-h-10 mt-10 h-100 px-4 sm:px-8 border-b border-gray-100 bg-white sticky top-0 z-10 flex-nowrap">
+          <button
+            className={`min-w-max px-4 py-2 font-semibold rounded border ${tab === 'overview' ? ' border-green-200 text-green-700 bg-white' : 'border-transparent text-gray-400 bg-gray-50'} focus:outline-none`}
+            style={tab === 'overview' ? {boxShadow:'0 1px 2px rgba(0,0,0,0.01)'} : {}}
+            onClick={() => setTab('overview')}
+          >Overview</button>
+          <button
+            className={`min-w-max px-4 py-2 font-semibold rounded border ${tab === 'layouts' ? 'border-green-200 text-green-700 bg-white' : 'border-transparent text-gray-400 bg-gray-50'} focus:outline-none`}
+            style={tab === 'layouts' ? {boxShadow:'0 1px 2px rgba(0,0,0,0.01)'} : {}}
+            onClick={() => setTab('layouts')}
+          >Layouts</button>
+          <button
+            className={`min-w-max px-4 py-2 font-semibold rounded border ${tab === 'furniture' ? 'border-green-200 text-green-700 bg-white' : 'border-transparent text-gray-400 bg-gray-50'} focus:outline-none`}
+            style={tab === 'furniture' ? {boxShadow:'0 1px 2px rgba(0,0,0,0.01)'} : {}}
+            onClick={() => setTab('furniture')}
+          >Furniture</button>
+          <button
+            className={`min-w-max px-4 py-2 font-semibold rounded border ${tab === 'customize' ? 'border-green-200 text-green-700 bg-white' : 'border-transparent text-gray-400 bg-gray-50'} focus:outline-none`}
+            style={tab === 'customize' ? {boxShadow:'0 1px 2px rgba(0,0,0,0.01)'} : {}}
+            onClick={() => setTab('customize')}
+          >Customize</button>
+          <button
+            className={`min-w-max px-4 py-2 font-semibold rounded border ${tab === 'materials' ? 'border-green-200 text-green-700 bg-white' : 'border-transparent text-gray-400 bg-gray-50'} focus:outline-none`}
+            style={tab === 'materials' ? {boxShadow:'0 1px 2px rgba(0,0,0,0.01)'} : {}}
+            onClick={() => setTab('materials')}
+          >Materials</button>
+          <button
+            className={`min-w-max px-4 py-2 font-semibold rounded border ${tab === 'pricing' ? 'border-green-200 text-green-700 bg-white' : 'border-transparent text-gray-400 bg-gray-50'} focus:outline-none`}
+            style={tab === 'pricing' ? {boxShadow:'0 1px 2px rgba(0,0,0,0.01)'} : {}}
+            onClick={() => setTab('pricing')}
+          >$ Pricing</button>
+        </div>
+        {/* Tab Content */}
+        {tab === 'overview' && (
+          <div className="flex flex-col md:flex-row gap-8 px-8 py-6 bg-gray-50">
+            {/* Left: Sustainable Design */}
+            <div className="flex-1">
+              <div className="text-2xl font-extrabold text-gray-900 mb-2">Sustainable Design</div>
+              <div className="text-gray-700 text-base">Our Grand Dome represents the pinnacle of sustainable living, combining innovative dome architecture with cutting-edge eco-friendly technologies. Every aspect is designed to minimize environmental impact while maximizing comfort and efficiency.</div>
+            </div>
+            {/* Right: Construction Specifications */}
+            <div className="flex-1">
+              <div className="text-2xl font-extrabold text-gray-900 mb-2">Construction Specifications</div>
+              <dl className="divide-y divide-gray-200">
+                {constructionSpecs.map((spec, i) => (
+                  <div key={i} className="flex py-2 text-base">
+                    <dt className="font-semibold text-gray-700 w-40 flex-shrink-0">{spec.label}</dt>
+                    <dd className="text-gray-600 flex-1">{spec.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        )}
+        {tab === 'layouts' && (
+          <div className="px-8 py-8"> 
+            {/* Layout tab selector */}
+            <div className="flex w-full max-w-xl mx-auto mb-6 rounded-lg overflow-hidden border border-gray-100 bg-gray-50">
+              {layouts.map(l => (
+                <button
+                  key={l.key}
+                  className={`flex-1 px-4 py-2 font-semibold text-base transition-all duration-200 focus:outline-none ${layoutTab === l.key ? 'bg-white text-green-700 shadow font-bold' : 'bg-gray-50 text-gray-500 hover:bg-gray-100'}`}
+                  onClick={() => setLayoutTab(l.key)}
+                >
+                  {l.name}
+                </button>
+              ))}
+            </div>
+            {/* Layout card */}
+            <div className="flex flex-col md:flex-row gap-6 bg-white rounded-xl border border-gray-200 shadow p-6">
+              <div className="flex-1 flex flex-col items-center justify-center">
+                <Image src={selectedLayout.img} alt={selectedLayout.name} className="rounded-lg w-full object-cover mb-4" />
+                <div className="flex gap-2 w-full justify-between">
+                  <span className="bg-gray-100 text-gray-700 text-xs font-semibold rounded px-3 py-1">↔ {selectedLayout.size}</span>
+                  <span className="bg-green-100 text-green-700 text-xs font-semibold rounded px-3 py-1 flex items-center gap-1"><svg width="16" height="16" fill="none"><circle cx="8" cy="8" r="7" stroke="#22c55e" strokeWidth="2"/></svg> {selectedLayout.people}</span>
+                </div>
               </div>
-            ))}
-          </div>
-          <div className="bg-green-100 rounded-xl p-4 mt-2 mb-2">
-            <div className="flex justify-between font-semibold text-green-900 text-base mb-1">
-              <span>Total</span>
-              <span>${totalPrice.toLocaleString()}</span>
+              <div className="flex-1 flex flex-col gap-2 justify-center">
+                <div className="text-xl font-bold text-gray-900 mb-1">{selectedLayout.name}</div>
+                <div className="text-gray-600 mb-2">{selectedLayout.subtitle}</div>
+                <div className="font-semibold text-gray-900 mb-1">Room Configuration:</div>
+                <ul className="mb-2">
+                  {selectedLayout.roomConfig.map((rc, i) => (
+                    <li key={i} className="flex items-center gap-2 text-gray-700 text-sm mb-1"><span className="text-green-500">{rc.icon}</span> {rc.label}</li>
+                  ))}
+                </ul>
+                <div className="font-semibold text-gray-900 mb-1">Key Features:</div>
+                <ul className="mb-4">
+                  {selectedLayout.features.map((f, i) => (
+                    <li key={i} className="flex items-center gap-2 text-green-700 text-sm"><span className="text-green-400">•</span> {f}</li>
+                  ))}
+                </ul>
+                <button className="bg-green-600 text-white font-semibold px-6 py-2 rounded shadow hover:bg-green-700 transition-all duration-200 w-full mt-auto">Select This Layout</button>
+              </div>
             </div>
-            <div className="flex justify-between text-sm text-gray-600">
-              <span>Required Deposit</span>
-              <span className="font-bold text-green-700">${deposit.toLocaleString()}</span>
+          </div>
+        )}
+        {tab === 'furniture' && (
+          <div className="px-8 py-10">
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">Furniture & Interior Design</h2>
+            <p className="text-gray-600 mb-8">Complete your dome with our curated furniture collections. Each piece is designed for comfort, sustainability, and harmony with your eco-friendly living space.</p>
+            
+            {/* Furniture Categories */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {/* Living Room */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-green-100 text-green-700 rounded-full p-2">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">Living Room</h3>
+                    <p className="text-sm text-gray-500">Comfortable seating & entertainment</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Sofa Set</span>
+                    <span className="text-green-700 font-semibold">$2,500</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Coffee Table</span>
+                    <span className="text-green-700 font-semibold">$800</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">TV Stand</span>
+                    <span className="text-green-700 font-semibold">$600</span>
+                  </div>
+                </div>
+                <button className="w-full bg-green-600 text-white font-semibold px-4 py-2 rounded mt-4 hover:bg-green-700 transition-all duration-200">Select Package</button>
+              </div>
+
+              {/* Kitchen & Dining */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-blue-100 text-blue-700 rounded-full p-2">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <path d="M3 7h18v10H3z" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M3 7l2-4h14l2 4" stroke="currentColor" strokeWidth="2"/>
+                      <circle cx="9" cy="12" r="1" fill="currentColor"/>
+                      <circle cx="15" cy="12" r="1" fill="currentColor"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">Kitchen & Dining</h3>
+                    <p className="text-sm text-gray-500">Functional & stylish dining</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Dining Table Set</span>
+                    <span className="text-green-700 font-semibold">$1,800</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Kitchen Island</span>
+                    <span className="text-green-700 font-semibold">$1,200</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Bar Stools</span>
+                    <span className="text-green-700 font-semibold">$400</span>
+                  </div>
+                </div>
+                <button className="w-full bg-green-600 text-white font-semibold px-4 py-2 rounded mt-4 hover:bg-green-700 transition-all duration-200">Select Package</button>
+              </div>
+
+              {/* Bedroom */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-purple-100 text-purple-700 rounded-full p-2">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 11h10" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">Bedroom</h3>
+                    <p className="text-sm text-gray-500">Restful & organized spaces</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Bed Frame</span>
+                    <span className="text-green-700 font-semibold">$1,500</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Nightstands</span>
+                    <span className="text-green-700 font-semibold">$600</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700">Dresser</span>
+                    <span className="text-green-700 font-semibold">$900</span>
+                  </div>
+                </div>
+                <button className="w-full bg-green-600 text-white font-semibold px-4 py-2 rounded mt-4 hover:bg-green-700 transition-all duration-200">Select Package</button>
+              </div>
+            </div>
+
+            {/* Customization Options */}
+            <div className="bg-green-50/40 border border-green-100 rounded-xl p-6 mb-8">
+              <h3 className="text-xl font-extrabold text-green-800 mb-4">Customization Options</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Material Selection */}
+                <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                  <div className="font-bold text-gray-900 mb-3">Material Selection</div>
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input type="radio" name="material" className="text-green-600 focus:ring-green-500" defaultChecked />
+                      <span className="text-gray-700">Sustainable Bamboo</span>
+                      <span className="text-green-600 font-semibold ml-auto">+$500</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input type="radio" name="material" className="text-green-600 focus:ring-green-500" />
+                      <span className="text-gray-700">Reclaimed Wood</span>
+                      <span className="text-green-600 font-semibold ml-auto">+$800</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input type="radio" name="material" className="text-green-600 focus:ring-green-500" />
+                      <span className="text-gray-700">FSC Certified Oak</span>
+                      <span className="text-green-600 font-semibold ml-auto">+$1,200</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Color Schemes */}
+                <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                  <div className="font-bold text-gray-900 mb-3">Color Schemes</div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <button className="w-full h-12 bg-gray-100 rounded border-2 border-green-500 hover:border-green-600 transition-all duration-200" title="Natural Wood"></button>
+                    <button className="w-full h-12 bg-gray-200 rounded border-2 border-transparent hover:border-green-500 transition-all duration-200" title="Light Oak"></button>
+                    <button className="w-full h-12 bg-gray-300 rounded border-2 border-transparent hover:border-green-500 transition-all duration-200" title="Dark Walnut"></button>
+                    <button className="w-full h-12 bg-gray-400 rounded border-2 border-transparent hover:border-green-500 transition-all duration-200" title="Charcoal"></button>
+                    <button className="w-full h-12 bg-gray-500 rounded border-2 border-transparent hover:border-green-500 transition-all duration-200" title="Slate"></button>
+                    <button className="w-full h-12 bg-gray-600 rounded border-2 border-transparent hover:border-green-500 transition-all duration-200" title="Espresso"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Smart Features */}
+            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-8">
+              <h3 className="text-xl font-extrabold text-gray-900 mb-4">Smart Features</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex items-start gap-3">
+                  <span className="bg-blue-100 text-blue-700 rounded-full p-2 mt-1">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <div className="font-semibold text-gray-900 mb-1">Smart Lighting</div>
+                    <div className="text-gray-600 text-sm">Automated lighting with motion sensors and natural light optimization</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="bg-green-100 text-green-700 rounded-full p-2 mt-1">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m6.28 6.28l4.24 4.24M1 12h6m6 0h6" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <div className="font-semibold text-gray-900 mb-1">Climate Control</div>
+                    <div className="text-gray-600 text-sm">Integrated HVAC with furniture-optimized air circulation</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="bg-purple-100 text-purple-700 rounded-full p-2 mt-1">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M8 21h8M12 17v4" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <div className="font-semibold text-gray-900 mb-1">Entertainment Hub</div>
+                    <div className="text-gray-600 text-sm">Built-in speakers and media storage with wireless charging</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="bg-yellow-100 text-yellow-700 rounded-full p-2 mt-1">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <path d="M12 2v20M2 12h20" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <div className="font-semibold text-gray-900 mb-1">Modular Design</div>
+                    <div className="text-gray-600 text-sm">Flexible furniture that adapts to your changing needs</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Total & Action */}
+            <div className="bg-green-50 border border-green-100 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <span className="font-bold text-lg text-gray-900">Furniture Package Total</span>
+                <span className="font-extrabold text-2xl text-green-700">$8,500</span>
+              </div>
+              <div className="text-sm text-gray-600 mb-4">
+                Includes: Living room set, kitchen & dining, bedroom furniture, smart features, and sustainable materials
+              </div>
+              <div className="flex justify-end">
+                <button className="bg-green-600 text-white font-semibold px-6 py-3 rounded shadow hover:bg-green-700 transition-all duration-200">
+                  Add to Configuration
+                </button> 
+              </div>
             </div>
           </div>
-          <button className="bg-green-700 text-white font-semibold px-6 py-3 rounded shadow hover:bg-green-800 transition-all duration-200 w-full text-lg mt-2">Start Project - Pay Deposit</button>
-          <div className="text-xs text-gray-400 text-center mt-1">Secure payment · Full refund within 14 days</div>
+        )}
+        {tab === 'customize' && (
+          <div className="px-8 py-10">
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">Customize Your Dome</h2>
+            <p className="text-gray-600 mb-8">Personalize your dome with premium add-ons and upgrades. Each option is carefully selected to enhance your sustainable living experience.</p>
+            {/* Decks */}
+            <div className="bg-green-50/40 border border-green-100 rounded-xl p-6 mb-8">
+              <div className="text-xl font-extrabold text-green-800 mb-4">Decks</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Ultimate Deck</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-green-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-green-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">1,000 sq ft multi-level comprehensive outdoor living space</div>
+                  <div className="font-extrabold text-green-900 text-lg mt-auto">85,000</div>
+                </div>
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Luxury Deck</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-green-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-green-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">1,500 sq ft ultimate outdoor living experience with multiple zones</div>
+                  <div className="font-extrabold text-green-900 text-lg mt-auto">125,000</div>
+                </div>
+              </div>
+            </div>
+            {/* Pergolas */}
+            <div className="bg-green-50/40 border border-green-100 rounded-xl p-6 mb-8">
+              <div className="text-xl font-extrabold text-green-800 mb-4">Pergolas</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Smart Pergola</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-green-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-green-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">600 sq ft climate-controlled smart pergola with integrated features</div>
+                  <div className="font-extrabold text-green-900 text-lg mt-auto">65,000</div>
+                </div>
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Biophilic Pergola</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-green-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-green-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">Living architecture with integrated ecosystems and water features</div>
+                  <div className="font-extrabold text-green-900 text-lg mt-auto">95,000</div>
+                </div>
+              </div>
+            </div>
+            {/* Outdoor Features */}
+            <div className="bg-green-50/40 border border-green-100 rounded-xl p-6 mb-8">
+              <div className="text-xl font-extrabold text-green-800 mb-4">Outdoor Features</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Infinity Pool</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-green-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-green-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">Luxury 30 x 15 infinity edge pool with spa</div>
+                  <div className="font-extrabold text-green-900 text-lg mt-auto">145,000</div>
+                </div>
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Gourmet Outdoor Kitchen</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-green-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-green-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">Professional-grade outdoor kitchen with multiple cooking zones</div>
+                  <div className="font-extrabold text-green-900 text-lg mt-auto">85,000</div>
+                </div>
+                <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-gray-900 text-lg">Comprehensive Entertainment</span>
+                    <span className="flex gap-2">
+                      <button className="border border-gray-200 rounded p-1 text-gray-500 hover:bg-green-50" title="View Details"><svg width="18" height="18" fill="none"><circle cx="9" cy="9" r="7" stroke="#64748b" strokeWidth="2"/><circle cx="9" cy="9" r="2" fill="#64748b"/></svg></button>
+                      <button className="border border-gray-200 rounded p-1 text-gray-700 hover:bg-green-50 font-bold">+</button>
+                    </span>
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">Complete outdoor living room with bar, fireplace and media</div>
+                  <div className="font-extrabold text-green-900 text-lg mt-auto">95,000</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {tab === 'materials' && (
+          <div className="px-8 py-10">
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">Sustainable Materials</h2>
+            <p className="text-gray-600 mb-8">Every material used in your dome is carefully selected for sustainability, durability, and health. We prioritize recycled content, low emissions, and renewable resources.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              {/* Exterior Materials */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow flex-1">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-green-600"><svg width="22" height="22" fill="none"><path d="M11 2L2 7v7c0 5 4 7 9 7s9-2 9-7V7l-9-5Z" stroke="#22c55e" strokeWidth="2"/></svg></span>
+                  <span className="text-xl font-extrabold text-gray-900">Exterior Materials</span>
+                </div>
+                <div className="space-y-3">
+                  <div className="bg-green-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Steel Frame Structure</div>
+                    <div className="text-gray-600 text-sm">100% recyclable galvanized steel, 50-year structural warranty</div>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Composite Panel System</div>
+                    <div className="text-gray-600 text-sm">Recycled wood fiber and polymer blend, fade resistant</div>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Metal Roofing</div>
+                    <div className="text-gray-600 text-sm">Recycled aluminum with reflective coating for energy efficiency</div>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Triple-Pane Windows</div>
+                    <div className="text-gray-600 text-sm">Low-E glass with argon fill, sustainably sourced frames</div>
+                  </div>
+                </div>
+              </div>
+              {/* Interior Materials */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow flex-1">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-green-600"><svg width="22" height="22" fill="none"><circle cx="11" cy="11" r="9" stroke="#22c55e" strokeWidth="2"/><path d="M7 14l2-2 4 4 4-4" stroke="#22c55e" strokeWidth="2"/></svg></span>
+                  <span className="text-xl font-extrabold text-gray-900">Interior Materials</span>
+                </div>
+                <div className="space-y-3">
+                  <div className="bg-green-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Bamboo Flooring</div>
+                    <div className="text-gray-600 text-sm">Rapidly renewable bamboo with low-VOC finish</div>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Recycled Glass Countertops</div>
+                    <div className="text-gray-600 text-sm">75% recycled glass with bio-based resin binder</div>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Natural Wool Insulation</div>
+                    <div className="text-gray-600 text-sm">Chemical-free sheeps wool, naturally fire resistant</div>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-3">
+                    <div className="font-bold text-gray-900">Zero-VOC Paint</div>
+                    <div className="text-gray-600 text-sm">Plant-based paints with natural pigments</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Environmental Certifications */}
+            <div className="bg-white rounded-xl border border-green-100 p-6 shadow flex flex-col mb-4">
+              <div className="flex items-center gap-2 mb-6">
+                <span className="text-green-600"><svg width="22" height="22" fill="none"><path d="M11 2C6.03 2 2 6.03 2 11c0 4.97 4.03 9 9 9s9-4.03 9-9c0-4.97-4.03-9-9-9Z" stroke="#22c55e" strokeWidth="2"/></svg></span>
+                <span className="text-xl font-extrabold text-green-800">Environmental Certifications</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="flex flex-col items-center text-center">
+                  <span className="bg-green-100 rounded-full p-3 mb-2"><svg width="36" height="36" fill="none"><circle cx="18" cy="18" r="16" stroke="#22c55e" strokeWidth="2"/><path d="M12 19l4 4 8-8" stroke="#22c55e" strokeWidth="2"/></svg></span>
+                  <div className="font-bold text-green-900 mb-1">LEED Platinum Ready</div>
+                  <div className="text-gray-600 text-sm">Meets highest green building standards</div>
+                </div>
+                <div className="flex flex-col items-center text-center">
+                  <span className="bg-green-100 rounded-full p-3 mb-2"><svg width="36" height="36" fill="none"><circle cx="18" cy="18" r="16" stroke="#22c55e" strokeWidth="2"/><path d="M18 12a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z" stroke="#22c55e" strokeWidth="2"/></svg></span>
+                  <div className="font-bold text-green-900 mb-1">GREENGUARD Gold</div>
+                  <div className="text-gray-600 text-sm">Low chemical emissions certified</div>
+                </div>
+                <div className="flex flex-col items-center text-center">
+                  <span className="bg-green-100 rounded-full p-3 mb-2"><svg width="36" height="36" fill="none"><circle cx="18" cy="18" r="16" stroke="#22c55e" strokeWidth="2"/><path d="M18 10v8M14 14h8" stroke="#22c55e" strokeWidth="2"/></svg></span>
+                  <div className="font-bold text-green-900 mb-1">ENERGY STAR</div>
+                  <div className="text-gray-600 text-sm">Exceeds energy efficiency requirements</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {tab === 'pricing' && (
+          <div className="px-8 py-10">
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">Transparent Pricing</h2>
+            <p className="text-gray-600 mb-8">Our pricing is transparent and comprehensive. See exactly what is included and how your customizations affect the total investment.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Base Package Includes */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow flex-1">
+                <div className="text-xl font-extrabold text-gray-900 mb-4">Base Package Includes</div>
+                <ul className="divide-y divide-gray-100">
+                  {[
+                    'Complete dome structure',
+                    'Professional installation',
+                    'Standard electrical & plumbing',
+                    'Basic appliance package',
+                    '10-year structural warranty',
+                    'Permits and inspections',
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center justify-between py-3 text-gray-800 text-base">
+                      <span>{item}</span>
+                      <span className="text-green-500 text-lg">✓</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {/* Your Configuration */}
+              <div className="bg-white rounded-xl border border-green-100 p-6 shadow flex-1">
+                <div className="text-xl font-extrabold text-gray-900 mb-4">Your Configuration</div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-gray-700 font-medium">Base Price</span>
+                  <span className="font-extrabold text-lg text-gray-900">$350,000</span>
+                </div>
+                <div className="text-gray-400 text-sm mb-4">No add-ons selected</div>
+                <hr className="my-4" />
+                <div className="flex items-center justify-between mb-4">
+                  <span className="font-extrabold text-lg text-gray-900">Total Investment</span>
+                  <span className="font-extrabold text-2xl text-green-700">$350,000</span>
+                </div>
+                <div className="bg-green-50 border border-green-100 rounded-lg p-4 mt-4">
+                  <div className="font-semibold text-gray-900 mb-1">Payment Options</div>
+                  <ul className="text-gray-700 text-sm list-disc pl-5 space-y-1">
+                    <li>25% down payment to start construction</li>
+                    <li>Progress payments during construction</li>
+                    <li>Final payment upon completion</li>
+                    <li>Financing options available</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* Bottom Bar */}
+        <div className="w-full flex items-center justify-between px-8 py-4 bg-white border-t border-gray-200 rounded-b-2xl sticky bottom-0 z-20">
+          <span className="text-xl font-bold text-gray-900">Total: <span className="font-extrabold">${basePrice.toLocaleString()}</span></span>
+          <button className="bg-green-700 text-white font-semibold px-6 py-3 rounded shadow hover:bg-green-800 transition-all duration-200 text-lg">Add to Cart</button>
         </div>
       </div>
     </div>
@@ -251,26 +777,315 @@ export default function Home() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // 3D View State Management
+  const [active3DView, setActive3DView] = useState<'exterior' | 'interior' | 'plan'>('exterior');
+  const [is3DModalOpen, setIs3DModalOpen] = useState(false);
+  const [selected3DModel, setSelected3DModel] = useState<string>('grand-dome');
+  const [viewAngle, setViewAngle] = useState<'front' | 'side' | 'back' | 'top'>('front');
+  const [isAutoRotate, setIsAutoRotate] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(false);
+
+  // 3D Model Data
+  const threeDModels = {
+    'grand-dome': {
+      name: 'Grand Dome',
+      price: '$350,000',
+      size: '2000 sq ft',
+      views: {
+        exterior: [
+          { angle: 'front', img: '/main/domy/d10/img-1.jpg', title: 'Front View', description: 'Majestic entrance with panoramic windows' },
+          { angle: 'side', img: '/main/domy/d10/img-2.jpg', title: 'Side View', description: 'Elegant profile with solar integration' },
+          { angle: 'back', img: '/main/domy/d10/img-1.jpg', title: 'Back View', description: 'Private outdoor living spaces' },
+          { angle: 'top', img: '/main/domy/d10/img-2.jpg', title: 'Aerial View', description: 'Complete dome structure overview' }
+        ],
+        interior: [
+          { angle: 'front', img: '/main/domy/d10/img-1.jpg', title: 'Living Area', description: 'Spacious open-concept living space' },
+          { angle: 'side', img: '/main/domy/d10/img-2.jpg', title: 'Kitchen', description: 'Modern kitchen with island' },
+          { angle: 'back', img: '/main/domy/d10/img-1.jpg', title: 'Bedroom', description: 'Peaceful bedroom retreat' },
+          { angle: 'top', img: '/main/domy/d10/img-2.jpg', title: 'Loft Area', description: 'Upper level living space' }
+        ],
+        plan: [
+          { angle: 'front', img: '/plan/plan-1.jpg', title: 'Ground Floor', description: 'Main living areas and bedrooms' },
+          { angle: 'side', img: '/plan/plan-2.jpg', title: 'Upper Floor', description: 'Additional bedrooms and loft' },
+          { angle: 'back', img: '/plan/plan-1.jpg', title: 'Site Plan', description: 'Complete property layout' },
+          { angle: 'top', img: '/plan/plan-2.jpg', title: 'Aerial Layout', description: 'Bird\'s eye view of entire property' }
+        ]
+      }
+    },
+    'family-dome': {
+      name: 'Family Dome',
+      price: '$275,000',
+      size: '1500 sq ft',
+      views: {
+        exterior: [
+          { angle: 'front', img: '/main/domy/d9/img-1.jpg', title: 'Front View', description: 'Welcoming family entrance' },
+          { angle: 'side', img: '/main/domy/d9/img-2.jpg', title: 'Side View', description: 'Perfect family proportions' },
+          { angle: 'back', img: '/main/domy/d9/img-1.jpg', title: 'Back View', description: 'Private family outdoor space' },
+          { angle: 'top', img: '/main/domy/d9/img-2.jpg', title: 'Aerial View', description: 'Complete family dome structure' }
+        ],
+        interior: [
+          { angle: 'front', img: '/main/domy/d9/img-1.jpg', title: 'Living Room', description: 'Cozy family gathering space' },
+          { angle: 'side', img: '/main/domy/d9/img-2.jpg', title: 'Kitchen', description: 'Family-friendly kitchen design' },
+          { angle: 'back', img: '/main/domy/d9/img-1.jpg', title: 'Bedroom', description: 'Comfortable family bedrooms' },
+          { angle: 'top', img: '/main/domy/d9/img-2.jpg', title: 'Family Area', description: 'Multi-purpose family space' }
+        ],
+        plan: [
+          { angle: 'front', img: '/plan/plan-1.jpg', title: 'Main Floor', description: 'Family living and dining areas' },
+          { angle: 'side', img: '/plan/plan-2.jpg', title: 'Bedroom Level', description: 'Family bedroom layout' },
+          { angle: 'back', img: '/plan/plan-1.jpg', title: 'Family Site', description: 'Complete family property layout' },
+          { angle: 'top', img: '/plan/plan-2.jpg', title: 'Family Aerial', description: 'Family property overview' }
+        ]
+      }
+    },
+    'compact-dome': {
+      name: 'Compact Studio',
+      price: '$150,000',
+      size: '400 sq ft',
+      views: {
+        exterior: [
+          { angle: 'front', img: '/main/domy/d6/img.jpg', title: 'Front View', description: 'Compact and efficient design' },
+          { angle: 'side', img: '/main/domy/d6/img-2.jpg', title: 'Side View', description: 'Perfect for singles or couples' },
+          { angle: 'back', img: '/main/domy/d6/img.jpg', title: 'Back View', description: 'Intimate outdoor space' },
+          { angle: 'top', img: '/main/domy/d6/img-2.jpg', title: 'Aerial View', description: 'Compact dome overview' }
+        ],
+        interior: [
+          { angle: 'front', img: '/main/domy/d6/img.jpg', title: 'Living Area', description: 'Efficient open living space' },
+          { angle: 'side', img: '/main/domy/d6/img-2.jpg', title: 'Kitchen', description: 'Compact kitchen design' },
+          { angle: 'back', img: '/main/domy/d6/img.jpg', title: 'Sleeping Area', description: 'Cozy sleeping space' },
+          { angle: 'top', img: '/main/domy/d6/img-2.jpg', title: 'Studio Layout', description: 'Efficient studio arrangement' }
+        ],
+        plan: [
+          { angle: 'front', img: '/plan/plan-1.jpg', title: 'Studio Floor', description: 'Efficient studio layout' },
+          { angle: 'side', img: '/plan/plan-2.jpg', title: 'Compact Plan', description: 'Space-optimized design' },
+          { angle: 'back', img: '/plan/plan-1.jpg', title: 'Studio Site', description: 'Compact property layout' },
+          { angle: 'top', img: '/plan/plan-2.jpg', title: 'Studio Aerial', description: 'Compact property overview' }
+        ]
+      }
+    }
+  };
+
+  // Get current 3D model data
+  const currentModel = threeDModels[selected3DModel as keyof typeof threeDModels];
+  const currentViews = currentModel?.views[active3DView];
+  const currentView = currentViews?.find(v => v.angle === viewAngle);
+
+  // Auto-rotate 3D view
+  useEffect(() => {
+    if (!isAutoRotate) return;
+    
+    const interval = setInterval(() => {
+      setViewAngle((prev) => {
+        const angles = ['front', 'side', 'back', 'top'] as const;
+        const currentIndex = angles.indexOf(prev);
+        const nextIndex = (currentIndex + 1) % angles.length;
+        return angles[nextIndex];
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [isAutoRotate]);
+
+  // Reset 3D view when modal opens
+  useEffect(() => {
+    if (is3DModalOpen) {
+      setViewAngle('front');
+      setIsImageLoading(false);
+    }
+  }, [is3DModalOpen]);
+
+  // 3D View Modal Component
+  const ThreeDViewModal = () => {
+    if (!is3DModalOpen || !currentModel) return null;
+
+    return (
+      <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 sm:p-6 lg:p-8">
+        {/* Overlay */}
+        <div
+          className="fixed inset-0 bg-black/70 backdrop-blur-md z-40"
+          onClick={() => setIs3DModalOpen(false)}
+          aria-label="Close 3D view"
+        />
+        
+        {/* Modal Content */}
+        <div className="bg-white rounded-3xl shadow-2xl p-0 relative flex flex-col z-50 max-w-7xl w-full max-h-[90vh] sm:max-h-[85vh] lg:max-h-[80vh] transform transition-all duration-300 scale-100 opacity-100 border border-gray-200">
+          {/* Header */}
+          <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 bg-gradient-to-r from-green-50 to-blue-50">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 truncate">{currentModel.name} - 3D View</h2>
+              <p className="text-gray-700 font-medium text-sm sm:text-base">{currentModel.size} • Starting from {currentModel.price}</p>
+            </div>
+            <button 
+              onClick={() => setIs3DModalOpen(false)} 
+              className="text-gray-500 hover:text-red-600 text-2xl sm:text-3xl font-bold focus:outline-none hover:bg-red-50 p-2 rounded-full transition-all flex-shrink-0 ml-4"
+              aria-label="Close 3D view"
+            >
+              ×
+            </button>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex flex-col lg:flex-row flex-1 overflow-hidden min-h-0">
+            {/* Left Panel - 3D View Controls */}
+            <div className="lg:w-80 bg-gradient-to-b from-gray-50 to-white p-4 sm:p-6 border-r border-gray-200 overflow-y-auto">
+              {/* Model Selector */}
+              <div className="mb-6">
+                <h3 className="font-bold text-gray-900 mb-3 text-lg">Select Model</h3>
+                <div className="space-y-3">
+                  {Object.entries(threeDModels).map(([key, model]) => (
+                    <button
+                      key={key}
+                      onClick={() => setSelected3DModel(key)}
+                      className={`w-full text-left p-4 rounded-xl border-2 transition-all shadow-sm hover:shadow-md ${
+                        selected3DModel === key 
+                          ? 'border-green-500 bg-green-50 text-green-800 shadow-lg' 
+                          : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50/50'
+                      }`}
+                    >
+                      <div className="font-bold text-lg text-gray-800">{model.name}</div>
+                      <div className="text-sm text-gray-700 font-medium">{model.size} • {model.price}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* View Type Selector */}
+              <div className="mb-6">
+                <h3 className="font-bold text-gray-900 mb-3 text-lg">View Type</h3>
+                <div className="grid grid-cols-3 gap-3">
+                  {(['exterior', 'interior', 'plan'] as const).map((view) => (
+                    <button
+                      key={view}
+                      onClick={() => setActive3DView(view)}
+                      className={`p-3 rounded-xl border-2 text-sm font-bold text-gray-800 transition-all shadow-sm hover:shadow-md ${
+                        active3DView === view 
+                          ? 'border-green-500 bg-green-50 text-green-800 shadow-lg' 
+                          : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50/50'
+                      }`}
+                    >
+                      {view.charAt(0).toUpperCase() + view.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Angle Controls */}
+              <div className="mb-6">
+                <h3 className="font-bold text-gray-900 mb-3 text-lg">View Angle</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {(['front', 'side', 'back', 'top'] as const).map((angle) => (
+                    <button
+                      key={angle}
+                      onClick={() => setViewAngle(angle)}
+                      className={`p-3 rounded-xl border-2 text-gray-800 text-sm font-bold transition-all shadow-sm hover:shadow-md ${
+                        viewAngle === angle 
+                          ? 'border-green-500 bg-green-50 text-green-800 shadow-lg' 
+                          : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50/50'
+                      }`}
+                    >
+                      {angle.charAt(0).toUpperCase() + angle.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Auto-rotate Toggle */}
+              <div className="mb-6">
+                <div className="flex items-center justify-between p-3 bg-white rounded-xl border-2 border-gray-200 shadow-sm">
+                  <span className="font-bold text-gray-900">Auto-rotate</span>
+                  <button
+                    onClick={() => setIsAutoRotate(!isAutoRotate)}
+                    className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors shadow-inner ${
+                      isAutoRotate ? 'bg-green-500' : 'bg-gray-300'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-sm ${
+                        isAutoRotate ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              {/* Current View Info */}
+              {currentView && (
+                <div className="bg-white rounded-xl p-4 border-2 border-gray-200 shadow-sm">
+                  <h4 className="font-bold text-gray-900 mb-2 text-lg">{currentView.title}</h4>
+                  <p className="text-sm text-gray-700 leading-relaxed">{currentView.description}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Right Panel - 3D View Display */}
+            <div className="flex-1 flex flex-col min-h-0">
+              {/* View Display */}
+              <div className="flex-1 relative bg-gradient-to-br from-gray-100 to-gray-200 min-h-0">
+                {currentView ? (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    {isImageLoading && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                        <div className="flex items-center gap-3 text-gray-700 font-medium">
+                          <svg className="animate-spin h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                          </svg>
+                          Loading 3D view...
+                        </div>
+                      </div>
+                    )}
+                    <Image
+                      src={currentView.img}
+                      alt={currentView.title}
+                      fill
+                      className="object-contain"
+                      onLoad={() => setIsImageLoading(false)}
+                      onLoadStart={() => setIsImageLoading(true)}
+                    />
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-gray-600 text-xl font-medium">Select a view to see the 3D model</div>
+                  </div>
+                )}
+              </div>
+
+              {/* View Navigation */}
+              <div className="p-4 sm:p-6 border-t border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-3 sm:gap-4">
+                  <div className="flex gap-2 flex-wrap justify-center lg:justify-start">
+                    {currentViews?.map((view) => (
+                      <button
+                        key={view.angle}
+                        onClick={() => setViewAngle(view.angle as 'front' | 'side' | 'back' | 'top')}
+                        className={`px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-sm hover:shadow-md ${
+                          viewAngle === view.angle
+                            ? 'bg-green-600 text-white shadow-lg'
+                            : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
+                        }`}
+                      >
+                        {view.title}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center lg:justify-end">
+                    <button className="bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold hover:bg-green-700 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base">
+                      Customize This Model
+                    </button>
+                    <button className="bg-gray-100 text-gray-800 px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold hover:bg-gray-200 transition-all shadow-lg text-sm sm:text-base">
+                      Get Quote
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // Add environment domes carousel state and data to Home component
   const envDomes = [
-    {
-      img: "/main/aegean/img-2.jpg",
-      badge: "Temperate Riverside",
-      badgeClass: "absolute top-4 left-4 bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full",
-      icon: <svg width='16' height='16' fill='none'><circle cx='8' cy='8' r='7' stroke='#22d3ee' strokeWidth='2'/></svg>,
-      location: "Riverside Locations",
-      title: "Riverside Sanctuary",
-      description: "Wake up to the gentle sound of flowing water in our riverside domes. Featuring enhanced moisture control, flood-resistant foundations, and panoramic river views. Perfect for nature lovers who want to live by the water.",
-      priceClass: "text-xs bg-blue-50 text-blue-700 rounded px-2 py-1 inline-block mb-2",
-      priceLabel: "Temperate Riverside",
-      price: "Starting from $280,000",
-      features: [
-        { iconClass: "text-blue-500", text: "Enhanced moisture control systems" },
-        { iconClass: "text-blue-500", text: "Flood-resistant foundation design" },
-        { iconClass: "text-blue-500", text: "Panoramic river view windows" },
-      ],
-      button: "Explore Riverside Sanctuary",
-    },
     {
       img: "/main/aegean/img-1.webp",
       badge: "Ocean Breeze",
@@ -642,33 +1457,35 @@ export default function Home() {
     
 
       {/* Navigation - Improved */}
-      <nav className="sticky top-0 z-100 bg-green-900/90 backdrop-blur-md shadow-md flex justify-between items-center px-6 sm:px-12 py-4 transition-all">
+      <nav className="sticky top-0 z-100 bg-white/80 backdrop-blur-md shadow-md flex justify-between items-center px-6 sm:px-12 py-4 transition-all">
         <div className="flex items-center gap-3">
-          {/* SVG Logo */}
-          <span aria-label="RoomyDomy Logo" className="inline-flex items-center justify-center rounded-full bg-white/10 p-2 shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-leaf h-8 w-8 text-lime-400"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
-          </span>
-          <span className="text-white font-extrabold text-2xl tracking-tight">RoomyDomy</span>
+          {/* Logo Image */}
+          <Image 
+            src="/logo.png" 
+            alt="RoomyDomy Logo" 
+            width={120} 
+            height={75} 
+          />
         </div>
-        <ul className="hidden md:flex gap-8 text-white font-medium text-base">
-          <li><a href="#features" className="hover:text-lime-300 transition border-b-2 border-transparent hover:border-lime-300 pb-1">Features</a></li>
-          <li><a href="#dome" className="hover:text-lime-300 transition border-b-2 border-transparent hover:border-lime-300 pb-1">Dome Homes</a></li>
-          <li><a href="#aframe" className="hover:text-lime-300 transition border-b-2 border-transparent hover:border-lime-300 pb-1">A-Frame & Box</a></li>
-          <li><a href="#amenities" className="hover:text-lime-300 transition border-b-2 border-transparent hover:border-lime-300 pb-1">Amenities</a></li>
-          <li><a href="#gallery" className="hover:text-lime-300 transition border-b-2 border-transparent hover:border-lime-300 pb-1">Gallery</a></li>
-          <li><a href="#partners" className="hover:text-lime-300 transition border-b-2 border-transparent hover:border-lime-300 pb-1">Partners</a></li>
-          <li><a href="#contact" className="hover:text-lime-300 transition border-b-2 border-transparent hover:border-lime-300 pb-1">Contact</a></li>
+        <ul className="hidden md:flex gap-8 text-gray-800 font-medium text-base">
+          <li><a href="#features" className="hover:text-green-600 transition border-b-2 border-transparent hover:border-green-600 pb-1">Features</a></li>
+          <li><a href="#dome" className="hover:text-green-600 transition border-b-2 border-transparent hover:border-green-600 pb-1">Dome Homes</a></li>
+          <li><a href="#aframe" className="hover:text-green-600 transition border-b-2 border-transparent hover:border-green-600 pb-1">A-Frame & Box</a></li>
+          <li><a href="#amenities" className="hover:text-green-600 transition border-b-2 border-transparent hover:border-green-600 pb-1">Amenities</a></li>
+          <li><a href="#gallery" className="hover:text-green-600 transition border-b-2 border-transparent hover:border-green-600 pb-1">Gallery</a></li>
+          <li><a href="#partners" className="hover:text-green-600 transition border-b-2 border-transparent hover:border-green-600 pb-1">Partners</a></li>
+          <li><a href="#contact" className="hover:text-green-600 transition border-b-2 border-transparent hover:border-green-600 pb-1">Contact</a></li>
         </ul>
         {/* Hamburger for mobile (UI only) */}
         <div className="md:hidden flex items-center">
-          <button className="text-white hover:text-lime-300 focus:outline-none p-2 rounded transition" aria-label="Open menu">
+          <button className="text-gray-800 hover:text-green-600 focus:outline-none p-2 rounded transition" aria-label="Open menu">
             <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><rect y="4" width="24" height="2" rx="1" fill="currentColor"/><rect y="11" width="24" height="2" rx="1" fill="currentColor"/><rect y="18" width="24" height="2" rx="1" fill="currentColor"/></svg>
           </button>
         </div>
         <div className="hidden md:flex gap-2 ml-6">
-          <button className="px-4 py-2 rounded bg-white/10 border border-white/30 text-white hover:bg-white/20 transition">Partner Login</button>
-          <button className="px-4 py-2 rounded bg-white/10 border border-white/30 text-white hover:bg-white/20 transition">Admin Login</button>
-          <button className="px-4 py-2 rounded bg-lime-400 text-green-900 font-semibold hover:bg-lime-300 transition shadow">Join as Partner</button>
+          <button className="px-4 py-2 rounded bg-gray-100 border border-gray-200 text-gray-700 hover:bg-gray-200 transition">Partner Login</button>
+          <button className="px-4 py-2 rounded bg-gray-100 border border-gray-200 text-gray-700 hover:bg-gray-200 transition">Admin Login</button>
+          <button className="px-4 py-2 rounded bg-green-600 text-white font-semibold hover:bg-green-700 transition shadow">Join as Partner</button>
         </div>
       </nav>
 
@@ -757,7 +1574,7 @@ export default function Home() {
         <div className="max-w-4xl w-full flex flex-col items-center mb-14">
           <div className="mb-3 text-green-700 font-bold tracking-widest text-base uppercase">Sustainability & Customization</div>
           <h2 className="text-5xl sm:text-6xl font-extrabold text-gray-900 mb-4 text-center leading-tight">Build Your Perfect Eco-Home</h2>
-          <p className="text-gray-600 text-center max-w-2xl mb-8 text-xl">Our innovative dome homes combine cutting-edge sustainable technology with a customizable approach. Choose your base model and add the features that matter most to you, creating a truly personalized eco-friendly living space.</p>
+          <p className="text-gray-700 text-center max-w-2xl mb-8 text-xl font-medium">Our innovative dome homes combine cutting-edge sustainable technology with a customizable approach. Choose your base model and add the features that matter most to you, creating a truly personalized eco-friendly living space.</p>
           <button className="bg-green-700 text-white font-bold px-8 py-3 rounded-full shadow-lg hover:bg-green-800 hover:scale-105 transition-all duration-200 text-lg">Explore Dome Options</button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-5xl">
@@ -765,19 +1582,19 @@ export default function Home() {
           <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-start gap-3 border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-200">
             <span className="bg-lime-100 text-lime-600 rounded-full p-3 mb-2"><svg width='28' height='28' fill='none'><circle cx='14' cy='14' r='12' stroke='#A3E635' strokeWidth='2.5'/><path d='M14 8v7l4 4' stroke='#A3E635' strokeWidth='2.5' strokeLinecap='round'/></svg></span>
             <h3 className="font-bold text-xl text-gray-900">Solar Energy Integration</h3>
-            <p className="text-gray-600 text-lg">Our domes harness the power of the sun with integrated solar panels, providing sustainable electricity for all your needs.</p>
+            <p className="text-gray-700 text-lg font-medium">Our domes harness the power of the sun with integrated solar panels, providing sustainable electricity for all your needs.</p>
           </div>
           {/* Card 2 */}
           <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-start gap-3 border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-200">
             <span className="bg-lime-100 text-lime-600 rounded-full p-3 mb-2"><svg width='28' height='28' fill='none'><circle cx='14' cy='14' r='12' stroke='#A3E635' strokeWidth='2.5'/><path d='M14 10v6l3 3' stroke='#A3E635' strokeWidth='2.5' strokeLinecap='round'/></svg></span>
             <h3 className="font-bold text-xl text-gray-900">Water Collection System</h3>
-            <p className="text-gray-600 text-lg">Advanced rainwater collection and filtration systems ensure a constant supply of clean water.</p>
+            <p className="text-gray-700 text-lg font-medium">Advanced rainwater collection and filtration systems ensure a constant supply of clean water.</p>
           </div>
           {/* Card 3 */}
           <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-start gap-3 border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-200">
             <span className="bg-lime-100 text-lime-600 rounded-full p-3 mb-2"><svg width='28' height='28' fill='none'><circle cx='14' cy='14' r='12' stroke='#A3E635' strokeWidth='2.5'/><path d='M10 14h8' stroke='#A3E635' strokeWidth='2.5' strokeLinecap='round'/></svg></span>
             <h3 className="font-bold text-xl text-gray-900">Eco-Friendly Materials</h3>
-            <p className="text-gray-600 text-lg">Built with sustainable materials that reduce environmental impact while providing superior insulation.</p>
+            <p className="text-gray-700 text-lg font-medium">Built with sustainable materials that reduce environmental impact while providing superior insulation.</p>
           </div>
         </div>
       </section>
@@ -852,11 +1669,101 @@ export default function Home() {
         
       </section>
 
+        {/* Section: Interactive 3D House Views */}
+      <section className="relative z-10 py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50 overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-green-100 rounded-full opacity-20"></div>
+          <div className="absolute bottom-20 right-10 w-24 h-24 bg-blue-100 rounded-full opacity-20"></div>
+          <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-yellow-100 rounded-full opacity-20"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 rounded-full px-4 py-2 text-sm font-semibold mb-4 shadow-sm">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+              </svg>
+              INTERACTIVE 3D VIEWS
+            </div>
+            <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-6">
+              Explore Your Dream Home in <span className="text-green-600">3D</span>
+            </h2>
+            <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+              Experience every angle of your future dome home with our interactive 3D viewer. Switch between exterior, interior, and floor plan views to see your perfect sustainable living space.
+            </p>
+          </div>
+
+          {/* 3D Model Preview Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {Object.entries(threeDModels).map(([key, model]) => (
+              <div
+                key={key}
+                className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 group cursor-pointer border border-gray-100"
+                onClick={() => {
+                  setSelected3DModel(key);
+                  setIs3DModalOpen(true);
+                }}
+              >
+                <div className="relative h-48 w-full overflow-hidden">
+                  <Image
+                    src={model.views.exterior[0].img}
+                    alt={model.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <div className="bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full inline-block mb-2 shadow-lg">
+                      3D Interactive
+                    </div>
+                    <h3 className="text-white text-xl font-bold mb-1 drop-shadow-lg">{model.name}</h3>
+                    <p className="text-white text-sm font-medium drop-shadow-lg">{model.size} • {model.price}</p>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex gap-2 flex-wrap">
+                      <span className="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded shadow-sm">Exterior</span>
+                      <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded shadow-sm">Interior</span>
+                      <span className="bg-purple-100 text-purple-800 text-xs font-semibold px-2 py-1 rounded shadow-sm">Floor Plan</span>
+                    </div>
+                  </div>
+                  <p className="text-gray-700 text-sm mb-4 leading-relaxed">
+                    Click to explore this model in our interactive 3D viewer with multiple viewing angles and detailed information.
+                  </p>
+                  <button className="w-full bg-green-600 text-white font-semibold px-4 py-3 rounded-lg hover:bg-green-700 transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Open 3D Viewer
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          
+          {/* Call to Action */}
+          <div className="text-center mt-12">
+            <p className="text-gray-700 mb-6 text-lg font-medium">
+              Ready to explore your perfect dome home? Use our interactive 3D viewer to see every detail.
+            </p>
+            <button 
+              onClick={() => setIs3DModalOpen(true)}
+              className="bg-green-600 text-white font-bold px-8 py-4 rounded-xl shadow-xl hover:bg-green-700 hover:scale-105 transition-all duration-300 text-lg"
+            >
+              Launch 3D Viewer
+            </button>
+          </div>
+        </div>
+      </section> 
+
       {/* Section: Testimonials */}
       <section className="relative z-10 flex flex-col items-center justify-center py-20 bg-gradient-to-b from-white to-green-50">
         <div className="mb-4 text-green-700 font-bold tracking-widest text-sm text-center uppercase">Customer Stories</div>
         <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 text-center mb-4">What Our <span className="text-green-700">Homeowners Say</span></h2>
-        <p className="text-gray-600 text-center max-w-3xl mb-16 text-xl leading-relaxed">Real experiences from real EcoDome homeowners who have transformed their lives with sustainable living. Discover how our dome homes are making a difference.</p>
+                    <p className="text-gray-700 text-center max-w-3xl mb-16 text-xl leading-relaxed font-medium">Real experiences from real EcoDome homeowners who have transformed their lives with sustainable living. Discover how our dome homes are making a difference.</p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto">
           {/* Testimonial 1 */}
@@ -948,19 +1855,19 @@ export default function Home() {
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 w-full max-w-4xl mx-auto">
           <div className="text-center">
             <div className="text-3xl font-bold text-green-700 mb-2">500+</div>
-            <div className="text-gray-600 font-medium">Happy Families</div>
+            <div className="text-gray-700 font-medium">Happy Families</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-green-700 mb-2">70%</div>
-            <div className="text-gray-600 font-medium">Energy Savings</div>
+            <div className="text-gray-700 font-medium">Energy Savings</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-green-700 mb-2">4.9★</div>
-            <div className="text-gray-600 font-medium">Average Rating</div>
+            <div className="text-gray-700 font-medium">Average Rating</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-green-700 mb-2">30yr</div>
-            <div className="text-gray-600 font-medium">Warranty</div>
+            <div className="text-gray-700 font-medium">Warranty</div>
           </div>
         </div>
       </section>
@@ -1073,6 +1980,7 @@ export default function Home() {
           </div>
         </div>
         <DomeDetailsModal open={modalOpen} onClose={() => setModalOpen(false)} dome={selectedDome} />
+        <ThreeDViewModal />
         <div className="text-gray-500 text-base text-center mb-4">
           All dome models include our signature eco-friendly features: solar power, rainwater collection, and sustainable materials.
         </div>
@@ -1598,6 +2506,8 @@ export default function Home() {
           <div>Designed for Prasanga.</div>
         </div>
       </footer>
+
+    
     </div>
   );
 }
