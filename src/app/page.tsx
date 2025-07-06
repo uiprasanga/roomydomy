@@ -14,7 +14,7 @@ interface Dome {
 }
 
 // Modal component for dome details
-function DomeDetailsModal({ open, onClose, dome }: { open: boolean; onClose: () => void; dome: Dome | null }) {
+function DomeDetailsModal({ open, onClose, dome, setIs3DModalOpen }: { open: boolean; onClose: () => void; dome: Dome | null; setIs3DModalOpen: (open: boolean) => void }) {
   const [tab, setTab] = useState('overview');
   const [layoutTab, setLayoutTab] = useState('luxury');
   if (!open || !dome) return null;
@@ -112,7 +112,7 @@ function DomeDetailsModal({ open, onClose, dome }: { open: boolean; onClose: () 
         <div className="flex flex-col md:flex-row gap-8 px-8">
           {/* Image with price tag */}
           <div className="flex-1 min-w-[280px] relative">
-            <Image src={dome.img} alt={dome.title} className="rounded-xl w-full h-64 object-cover mb-2" />
+            <Image src={dome.img} alt={dome.title} className="rounded-xl w-full h-64 object-cover mb-2" width={400} height={256} />
             <div className="absolute left-4 bottom-4 bg-gray-700 text-white text-sm font-semibold rounded px-4 py-1 shadow">Starting from {dome.price}</div>
             </div>
           {/* Description and Key Features */}
@@ -150,6 +150,11 @@ function DomeDetailsModal({ open, onClose, dome }: { open: boolean; onClose: () 
             style={tab === 'customize' ? {boxShadow:'0 1px 2px rgba(0,0,0,0.01)'} : {}}
             onClick={() => setTab('customize')}
           >Customize</button>
+          <button
+            className={`min-w-max px-4 py-2 font-semibold rounded border ${tab === '3dview' ? 'border-green-200 text-green-700 bg-white' : 'border-transparent text-gray-400 bg-gray-50'} focus:outline-none`}
+            style={tab === '3dview' ? {boxShadow:'0 1px 2px rgba(0,0,0,0.01)'} : {}}
+            onClick={() => setTab('3dview')}
+          >3D View</button>
           <button
             className={`min-w-max px-4 py-2 font-semibold rounded border ${tab === 'materials' ? 'border-green-200 text-green-700 bg-white' : 'border-transparent text-gray-400 bg-gray-50'} focus:outline-none`}
             style={tab === 'materials' ? {boxShadow:'0 1px 2px rgba(0,0,0,0.01)'} : {}}
@@ -200,7 +205,7 @@ function DomeDetailsModal({ open, onClose, dome }: { open: boolean; onClose: () 
             {/* Layout card */}
             <div className="flex flex-col md:flex-row gap-6 bg-white rounded-xl border border-gray-200 shadow p-6">
               <div className="flex-1 flex flex-col items-center justify-center">
-                <Image src={selectedLayout.img} alt={selectedLayout.name} className="rounded-lg w-full object-cover mb-4" />
+                <Image src={selectedLayout.img} alt={selectedLayout.name} className="rounded-lg w-full object-cover mb-4" width={400} height={300} />
                 <div className="flex gap-2 w-full justify-between">
                   <span className="bg-gray-100 text-gray-700 text-xs font-semibold rounded px-3 py-1">↔ {selectedLayout.size}</span>
                   <span className="bg-green-100 text-green-700 text-xs font-semibold rounded px-3 py-1 flex items-center gap-1"><svg width="16" height="16" fill="none"><circle cx="8" cy="8" r="7" stroke="#22c55e" strokeWidth="2"/></svg> {selectedLayout.people}</span>
@@ -537,6 +542,163 @@ function DomeDetailsModal({ open, onClose, dome }: { open: boolean; onClose: () 
                   </div>
                   <div className="text-gray-600 text-sm mb-2">Complete outdoor living room with bar, fireplace and media</div>
                   <div className="font-extrabold text-green-900 text-lg mt-auto">95,000</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {tab === '3dview' && (
+          <div className="px-8 py-10">
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">3D Interactive View</h2>
+            <p className="text-gray-600 mb-8">Explore your dome home in stunning 3D detail. Switch between different viewing angles to see every aspect of your sustainable living space.</p>
+            
+            {/* 3D Viewer Container */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden mb-8">
+              <div className="relative h-96 bg-gradient-to-br from-gray-50 to-gray-100">
+                {/* Placeholder for 3D viewer */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="bg-green-100 rounded-full p-4 mb-4 mx-auto w-16 h-16 flex items-center justify-center">
+                      <svg width="32" height="32" fill="none" viewBox="0 0 24 24">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="#22c55e" strokeWidth="2"/>
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Interactive 3D Viewer</h3>
+                    <p className="text-gray-600 mb-4">Click to launch the full 3D experience</p>
+                    <button 
+                      onClick={() => setIs3DModalOpen(true)}
+                      className="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-700 transition-all duration-200 flex items-center gap-2 mx-auto"
+                    >
+                      <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                      Launch 3D Viewer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* View Options */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-blue-100 text-blue-700 rounded-full p-2">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">Exterior Views</h3>
+                    <p className="text-sm text-gray-500">See your dome from all angles</p>
+                  </div>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-center gap-2"><span className="text-blue-500">•</span> Front elevation</li>
+                  <li className="flex items-center gap-2"><span className="text-blue-500">•</span> Side perspectives</li>
+                  <li className="flex items-center gap-2"><span className="text-blue-500">•</span> Aerial view</li>
+                  <li className="flex items-center gap-2"><span className="text-blue-500">•</span> Night lighting</li>
+                </ul>
+              </div>
+
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-green-100 text-green-700 rounded-full p-2">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">Interior Views</h3>
+                    <p className="text-sm text-gray-500">Explore inside your dome</p>
+                  </div>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-center gap-2"><span className="text-green-500">•</span> Living room</li>
+                  <li className="flex items-center gap-2"><span className="text-green-500">•</span> Kitchen & dining</li>
+                  <li className="flex items-center gap-2"><span className="text-green-500">•</span> Bedrooms</li>
+                  <li className="flex items-center gap-2"><span className="text-green-500">•</span> Bathrooms</li>
+                </ul>
+              </div>
+
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-purple-100 text-purple-700 rounded-full p-2">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <path d="M3 3h18v18H3z" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M9 9h6v6H9z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900">Floor Plans</h3>
+                    <p className="text-sm text-gray-500">Detailed layout views</p>
+                  </div>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-center gap-2"><span className="text-purple-500">•</span> Ground floor</li>
+                  <li className="flex items-center gap-2"><span className="text-purple-500">•</span> Upper level</li>
+                  <li className="flex items-center gap-2"><span className="text-purple-500">•</span> Roof plan</li>
+                  <li className="flex items-center gap-2"><span className="text-purple-500">•</span> Site layout</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Features */}
+            <div className="bg-green-50/40 border border-green-100 rounded-xl p-6">
+              <h3 className="text-xl font-extrabold text-green-800 mb-4">3D Viewer Features</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-green-100 text-green-700 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">360° Rotation</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-green-100 text-green-700 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Zoom & Pan Controls</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-green-100 text-green-700 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Material Swapping</span>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-green-100 text-green-700 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Day/Night Lighting</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-green-100 text-green-700 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Furniture Placement</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-green-100 text-green-700 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Measurement Tools</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1566,10 +1728,9 @@ export default function Home() {
 
       </section>
 
-      {/* Section Divider */}
-      <div className="w-full h-8 bg-gradient-to-b from-green-50 to-white my-8" />
+     
 
-      {/* Section 1: Build Your Perfect Eco-Home */}
+      {/* Section 1: Build Your Perfect Eco-Home */}  
       <section className="relative z-10 flex flex-col items-center justify-center py-20 bg-white">
         <div className="max-w-4xl w-full flex flex-col items-center mb-14">
           <div className="mb-3 text-green-700 font-bold tracking-widest text-base uppercase">Sustainability & Customization</div>
@@ -1599,7 +1760,263 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Section: Choose Your Perfect Dome */}
+      <section className="relative z-20 flex flex-col items-center justify-center py-16 bg-white">
+        <div className="mb-2 text-green-700 font-semibold tracking-widest text-sm text-center">CUSTOMIZABLE ECO-LIVING</div>
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 text-center">Choose Your Perfect Dome</h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">
+          Select your ideal dome size and customize with add-ons like decks, pergolas, pools, and outdoor kitchens. Start with a base model and build your dream eco-home with the features that matter most to you.
+        </p>
+        {/* Carousel Implementation */}
+        <div className="relative w-full max-w-6xl mb-8 px-2 sm:px-0">
+          {/* Carousel Arrows */}
+          <button
+            className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-lime-200 text-green-700 rounded-full shadow p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ left: '-2.5rem' }}
+            onClick={() => setCarouselIndex((prev) => Math.max(prev - visibleCards, 0))}
+            disabled={carouselIndex === 0}
+            aria-label="Previous domes"
+          >
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          <button
+            className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-lime-200 text-green-700 rounded-full shadow p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ right: '-2.5rem' }}
+            onClick={() => setCarouselIndex((prev) => Math.min(prev + visibleCards, domes.length - visibleCards))}
+            disabled={carouselIndex >= domes.length - visibleCards}
+            aria-label="Next domes"
+          >
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          {/* Carousel Cards */}
+          <div className="overflow-x-hidden">
+            <div
+              className="flex transition-transform duration-500"
+              style={{ transform: `translateX(-${(carouselIndex * (100 / visibleCards))}%)` }}
+            >
+              {domes.map((dome) => (
+                <div
+                  key={dome.title}
+                  className={`bg-white rounded-xl shadow p-4 flex flex-col border border-gray-100 relative transition-transform duration-200 group min-w-0${visibleCards === 1 ? '' : ' mx-2'}`}
+                  style={{ flex: `0 0 ${100 / visibleCards}%`, maxWidth: `${100 / visibleCards}%` }}
+                >
+                  <Image src={dome.img} alt={dome.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" width={320} height={160} />
+                  <span className="absolute top-4 right-4 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow m-[3px]">Options</span>
+                  <div className="text-sm text-gray-500 mb-1">{dome.size} · {dome.people}</div>
+                  <h3 className="font-bold text-xl text-gray-900 mb-1">{dome.title}</h3>
+                  <div className="text-sm bg-gray-100 text-gray-700 rounded px-2 py-1 inline-block mb-2">Base Model</div>
+                  <div className="text-base mb-2 text-gray-700 whitespace-pre-line">Customizable with:\n{dome.features}</div>
+                  <div className="font-semibold text-green-700 mb-2">Starting from <span className="text-gray-900">{dome.price}</span></div>
+                  <button
+                    className="bg-green-700 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-800 hover:scale-105 transition-all duration-200 mt-auto focus:outline-none focus:ring-2 focus:ring-lime-400"
+                    onClick={() => { setSelectedDome(dome); setModalOpen(true); }}
+                  >
+                    Customize & View Details
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Carousel Dots */}
+          <div className="flex justify-center gap-2 mt-4">
+            {Array.from({ length: Math.ceil(domes.length / visibleCards) }).map((_, i) => (
+              <button
+                key={i}
+                className={`w-3 h-3 rounded-full ${carouselIndex / visibleCards === i ? 'bg-lime-400 scale-125' : 'bg-gray-300'} transition-all`}
+                onClick={() => setCarouselIndex(i * visibleCards)}
+                aria-label={`Go to domes slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+        <DomeDetailsModal open={modalOpen} onClose={() => setModalOpen(false)} dome={selectedDome} setIs3DModalOpen={setIs3DModalOpen} />
+        <ThreeDViewModal />
+        <div className="text-gray-500 text-base text-center mb-4">
+          All dome models include our signature eco-friendly features: solar power, rainwater collection, and sustainable materials.
+        </div>
+        <button className="bg-green-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Schedule a Consultation</button>
+      </section>
+
+    
+
+      {/* Section: Sustainable Living CTA */} 
+      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-gradient-to-br from-green-700 via-green-800 to-lime-700 overflow-hidden">
+        {/* Decorative Blurred Glowing Shapes */}
+        <div className="absolute -top-16 -left-16 w-72 h-72 bg-lime-400 opacity-30 rounded-full filter blur-3xl z-0 animate-pulse-slow" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-green-500 opacity-20 rounded-full filter blur-2xl z-0 animate-pulse-slower" />
+        <div className="absolute top-1/2 left-1/2 w-96 h-40 bg-lime-200 opacity-20 rounded-full filter blur-2xl z-0 -translate-x-1/2 -translate-y-1/2" />
+        {/* Decorative Leaf Icon */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-10 pointer-events-none">
+          <svg width="220" height="120" viewBox="0 0 220 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="110" cy="60" rx="100" ry="50" fill="#A3E635" />
+          </svg>
+        </div>
+        <div className="max-w-5xl w-full flex flex-col md:flex-row items-center justify-between gap-8 bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl py-12 px-6 sm:px-14 border border-green-800 relative z-10">
+          <div className="flex-1 mb-6 md:mb-0">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="bg-lime-400/30 rounded-full p-2"><svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" stroke="#A3E635" strokeWidth="2"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="#A3E635" strokeWidth="2"/></svg></span>
+              <span className="text-lime-200 font-semibold tracking-wider text-base">SUSTAINABLE LIVING</span>
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 drop-shadow">Ready to Start Your Sustainable Living Journey?</h3>
+            <p className="text-green-100 mb-4 text-lg">Schedule a consultation and get a personalized quote for your dream eco-home today.</p>
+            <div className="text-xs text-lime-200 font-medium bg-lime-400/10 rounded-full px-3 py-1 inline-block mb-2">100% Free Consultation</div>
+          </div>
+          {/* Improved Form Layout */}
+          <form className="flex flex-col sm:flex-row gap-3 items-center w-full max-w-md">
+            <input type="email" placeholder="Your Email" className="flex-1 px-5 py-3 rounded-l-lg border border-green-200 bg-white text-green-900 shadow focus:outline-none focus:ring-2 focus:ring-lime-300 transition-all duration-200 text-base min-w-[180px]" />
+            <button className="bg-lime-400 text-green-900 font-bold px-7 py-3 rounded-r-lg shadow-lg hover:bg-lime-300 hover:scale-105 transition-all duration-200 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-lime-400 text-base">Request a Quote</button>
+          </form>
+        </div>
+      </section>
+
+      {/* Add keyframes for slow pulse animation in your global CSS if not present: */}
+      {/*
+      @keyframes pulse-slow { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.5; } }
+      .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
+      @keyframes pulse-slower { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.35; } }
+      .animate-pulse-slower { animation: pulse-slower 10s ease-in-out infinite; }
+      */}
+
      
+
+      {/* Section: Domes Designed for Your Environment */}
+      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-white">
+        <div className="mb-2 text-green-700 font-semibold tracking-widest text-sm text-center">LOCATION-SPECIFIC DESIGN</div>
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 text-center">Domes Designed for Your Environment</h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">Each location presents unique challenges and opportunities. Our specialized dome designs are optimized for specific environments, ensuring perfect harmony with your chosen setting.</p>
+        {/* Carousel Implementation */}
+        <div className="relative w-full max-w-6xl mb-8 px-2 sm:px-0">
+          {/* Carousel Arrows */}
+          <button
+            className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-lime-200 text-green-700 rounded-full shadow p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ left: '-2.5rem' }}
+            onClick={() => setEnvCarouselIndex((prev) => Math.max(prev - envVisibleCards, 0))}
+            disabled={envCarouselIndex === 0}
+            aria-label="Previous environment domes"
+          >
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          <button
+            className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-lime-200 text-green-700 rounded-full shadow p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ right: '-2.5rem' }}
+            onClick={() => setEnvCarouselIndex((prev) => Math.min(prev + envVisibleCards, envDomes.length - envVisibleCards))}
+            disabled={envCarouselIndex >= envDomes.length - envVisibleCards}
+            aria-label="Next environment domes"
+          >
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </button>
+          {/* Carousel Cards */}
+          <div className="overflow-x-hidden">
+            <div
+              className="flex transition-transform duration-500"
+              style={{ transform: `translateX(-${(envCarouselIndex * (100 / envVisibleCards))}%)` }}
+            >
+              {envDomes.map((card) => (
+                <div
+                  key={card.title}
+                  className={`bg-white rounded-xl shadow p-4 flex flex-col border border-gray-100 relative transition-transform duration-200 group min-w-0${envVisibleCards === 1 ? '' : ' mx-2'}`}
+                  style={{ flex: `0 0 ${100 / envVisibleCards}%`, maxWidth: `${100 / envVisibleCards}%` }}
+                >
+                  <Image src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3" width={320} height={160} />
+                  <span className={card.badgeClass + ' m-[3px]'}>{card.badge}</span>
+                  <div className="text-sm text-gray-500 mb-1 flex items-center gap-1">{card.icon}{card.location}</div>
+                  <h3 className="font-bold text-xl text-gray-900 mb-1">{card.title}</h3>
+                  <p className="text-base mb-2 text-gray-600">{card.description}</p>
+                  <div className={card.priceClass}>{card.priceLabel} <span className="font-semibold">{card.price}</span></div>
+                  <div className="text-sm text-gray-600 mb-3">
+                    {card.features.map((f, i) => (
+                      <div className="flex items-center gap-2 mb-1" key={i}><span className={f.iconClass}>✓</span> {f.text}</div>
+                    ))}
+                  </div>
+                  <button className="bg-green-700 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-800 transition-all duration-200 mt-auto">{card.button}</button>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Carousel Dots */}
+          <div className="flex justify-center gap-2 mt-4">
+            {Array.from({ length: Math.ceil(envDomes.length / envVisibleCards) }).map((_, i) => (
+              <button
+                key={i}
+                className={`w-3 h-3 rounded-full ${envCarouselIndex / envVisibleCards === i ? 'bg-lime-400 scale-125' : 'bg-gray-300'} transition-all`}
+                onClick={() => setEnvCarouselIndex(i * envVisibleCards)}
+                aria-label={`Go to environment domes slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="text-gray-500 text-base text-center mb-4">
+          Need a dome for a specific location or climate? Our design team can create custom solutions.
+        </div>
+        <button className="bg-green-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Request Custom Design</button>
+      </section>
+
+      {/* Section: Investment in Your Future (Pricing) */}
+      <section className="relative z-10 flex flex-col items-center justify-center  py-16 bg-white">
+        <div className="mb-2 text-green-700 font-semibold tracking-widest text-sm text-center">TRANSPARENT PRICING</div>
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 text-center">Investment in Your Future</h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">Our eco-domes are an investment in sustainable living that pays dividends through energy savings, increased property value, and reduced environmental impact.</p>
+        <div className="flex gap-4 mb-8">
+          <button className="bg-green-100 text-green-800 font-semibold px-4 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Base Price</button>
+          <button className="bg-white text-green-800 font-semibold px-4 py-2 rounded shadow border border-green-200 hover:bg-green-50 transition-all duration-200">With Energy Savings</button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mb-8">
+          {/* Starter Dome */}
+          <div className="bg-white rounded-xl shadow p-8 flex flex-col border border-gray-100">
+            <div className="font-bold text-xl text-gray-900 mb-1">Starter Dome</div>
+            <div className="text-base text-gray-500 mb-4">Perfect for individuals or couples looking for a sustainable living home.</div>
+            <div className="text-3xl font-extrabold text-green-700 mb-1">$89k</div>
+            <div className="text-xs text-gray-400 mb-4">Base price: $89,000</div>
+            <ul className="mb-6 text-base text-gray-700 space-y-2">
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> 600-900 sq ft living space</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Basic solar panel system</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Rainwater collection system</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Eco-friendly materials</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Standard insulation package</li>
+            </ul>
+            <button className="bg-green-700 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-800 transition-all duration-200 mt-auto">Request Quote</button>
+          </div>
+          {/* Family Dome (Most Popular) */}
+          <div className="bg-white rounded-xl shadow p-8 flex flex-col border-2 border-green-700 relative">
+            <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-green-700 text-white text-xs font-semibold px-4 py-1 rounded-full">Most Popular</div>
+            <div className="font-bold text-xl text-gray-900 mb-1 mt-4">Family Dome</div>
+            <div className="text-base text-gray-500 mb-4">Ideal for small families with space for comfortable sustainable living.</div>
+            <div className="text-3xl font-extrabold text-green-700 mb-1">$149k</div>
+            <div className="text-xs text-gray-400 mb-4">Base price: $149,000</div>
+            <ul className="mb-6 text-base text-gray-700 space-y-2">
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> 800-1200 sq ft living space</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Advanced solar array</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Complete water management system</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Premium eco-friendly materials</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Enhanced insulation package</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Smart home integration</li>
+            </ul>
+            <button className="bg-green-700 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-800 transition-all duration-200 mt-auto">Request Quote</button>
+          </div>
+          {/* Luxury Dome */}
+          <div className="bg-white rounded-xl shadow p-8 flex flex-col border border-gray-100">
+            <div className="font-bold text-xl text-gray-900 mb-1">Luxury Dome</div>
+            <div className="text-base text-gray-500 mb-4">Our premium offering with maximum space and cutting-edge sustainability features.</div>
+            <div className="text-3xl font-extrabold text-green-700 mb-1">$249k</div>
+            <div className="text-xs text-gray-400 mb-4">Base price: $249,000</div>
+            <ul className="mb-6 text-base text-gray-700 space-y-2">
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> 1500-2000+ sq ft living space</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Premium full battery system</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Advanced water reclamation</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Maximum insulation package</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Full smart home ecosystem</li>
+              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Customizable add-on packages included</li>
+            </ul>
+            <button className="bg-green-700 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-800 transition-all duration-200 mt-auto">Request Quote</button>
+          </div>
+        </div>
+        <div className="text-gray-500 text-sm text-center mb-4 max-w-2xl mx-auto">
+          All prices are starting points. Final pricing depends on specific customizations, location, and additional features. Contact us for a personalized quote tailored to your needs and location.
+        </div>
+        <button className="bg-green-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Get Custom Quote</button>
+      </section>
+
+
  
       {/* Section: Large Green Callout with Background Slider */}
       <section className="relative min-h-[520px] sm:min-h-[600px] md:h-screen z-10 flex flex-col items-center justify-center py-10 sm:py-16 overflow-hidden">
@@ -1668,98 +2085,91 @@ export default function Home() {
         {/* Scroll indicator */}
         
       </section>
+ 
 
-        {/* Section: Interactive 3D House Views */}
-      <section className="relative z-10 py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50 overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-green-100 rounded-full opacity-20"></div>
-          <div className="absolute bottom-20 right-10 w-24 h-24 bg-blue-100 rounded-full opacity-20"></div>
-          <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-yellow-100 rounded-full opacity-20"></div>
+      {/* Section: Explore Our House Types */}
+      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-gradient-to-b from-white to-green-50 overflow-hidden">
+        {/* Decorative background pattern */}
+        <div className="absolute z-10 inset-0 pointer-events-none select-none opacity-30 z-0">
+          <svg width="100%" height="100%" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <ellipse cx="300" cy="100" rx="320" ry="80" fill="#bbf7d0" />
+            <ellipse cx="300" cy="120" rx="220" ry="60" fill="#f0fdf4" />
+          </svg>
         </div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 rounded-full px-4 py-2 text-sm font-semibold mb-4 shadow-sm">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
-              </svg>
-              INTERACTIVE 3D VIEWS
-            </div>
-            <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-6">
-              Explore Your Dream Home in <span className="text-green-600">3D</span>
-            </h2>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
-              Experience every angle of your future dome home with our interactive 3D viewer. Switch between exterior, interior, and floor plan views to see your perfect sustainable living space.
-            </p>
-          </div>
-
-          {/* 3D Model Preview Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {Object.entries(threeDModels).map(([key, model]) => (
-              <div
-                key={key}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 group cursor-pointer border border-gray-100"
-                onClick={() => {
-                  setSelected3DModel(key);
-                  setIs3DModalOpen(true);
-                }}
-              >
-                <div className="relative h-48 w-full overflow-hidden">
-                  <Image
-                    src={model.views.exterior[0].img}
-                    alt={model.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <div className="bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full inline-block mb-2 shadow-lg">
-                      3D Interactive
-                    </div>
-                    <h3 className="text-white text-xl font-bold mb-1 drop-shadow-lg">{model.name}</h3>
-                    <p className="text-white text-sm font-medium drop-shadow-lg">{model.size} • {model.price}</p>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex gap-2 flex-wrap">
-                      <span className="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded shadow-sm">Exterior</span>
-                      <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded shadow-sm">Interior</span>
-                      <span className="bg-purple-100 text-purple-800 text-xs font-semibold px-2 py-1 rounded shadow-sm">Floor Plan</span>
-                    </div>
-                  </div>
-                  <p className="text-gray-700 text-sm mb-4 leading-relaxed">
-                    Click to explore this model in our interactive 3D viewer with multiple viewing angles and detailed information.
-                  </p>
-                  <button className="w-full bg-green-600 text-white font-semibold px-4 py-3 rounded-lg hover:bg-green-700 transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
-                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
-                    Open 3D Viewer
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          
-          {/* Call to Action */}
-          <div className="text-center mt-12">
-            <p className="text-gray-700 mb-6 text-lg font-medium">
-              Ready to explore your perfect dome home? Use our interactive 3D viewer to see every detail.
-            </p>
-            <button 
-              onClick={() => setIs3DModalOpen(true)}
-              className="bg-green-600 text-white font-bold px-8 py-4 rounded-xl shadow-xl hover:bg-green-700 hover:scale-105 transition-all duration-300 text-lg"
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-2 relative z-10">Explore Our House Types</h2>
+        <div className="text-green-700 text-base font-semibold mb-2 text-center relative z-10">Modern designs for every lifestyle</div>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg relative z-10">Beyond our signature dome homes, we offer beautiful A-Frame and Box house options. Each design combines modern architecture with sustainable living principles.</p>
+        {/* House type selector with animated underline */}
+        <div className="flex w-full max-w-xl mb-8 relative z-10" role="tablist" aria-label="House Types">
+          <button
+            role="tab"
+            aria-selected={houseTab === 'aFrame'}
+            tabIndex={houseTab === 'aFrame' ? 0 : -1}
+            className={`flex-1 px-4 py-2 font-semibold rounded-l shadow border-r border-green-200 transition-all duration-200 focus:outline-none relative ${houseTab === 'aFrame' ? 'bg-green-700 text-white' : 'bg-green-100 text-green-800 hover:bg-green-200'}`}
+            onClick={() => { setHouseTab('aFrame'); setExpandedCard(null); }}
+          >
+            <span className="inline-flex items-center gap-2"><svg width="20" height="20" fill="none"><polygon points="10,2 18,18 2,18" fill="#bef264" /></svg> A-Frame Houses</span>
+            {houseTab === 'aFrame' && <span className="absolute left-0 bottom-0 w-full h-1 bg-lime-400 rounded transition-all duration-300" />}
+          </button>
+          <button
+            role="tab"
+            aria-selected={houseTab === 'box'}
+            tabIndex={houseTab === 'box' ? 0 : -1}
+            className={`flex-1 px-4 py-2 font-semibold rounded-r shadow transition-all duration-200 focus:outline-none relative ${houseTab === 'box' ? 'bg-green-700 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+            onClick={() => { setHouseTab('box'); setExpandedCard(null); }}
+          >
+            <span className="inline-flex items-center gap-2"><svg width="20" height="20" fill="none"><rect x="4" y="4" width="12" height="12" rx="2" fill="#a3e635" /></svg> Box Houses</span>
+            {houseTab === 'box' && <span className="absolute left-0 bottom-0 w-full h-1 bg-lime-400 rounded transition-all duration-300" />}
+            {houseTab !== 'box' && <span className="absolute top-1 right-3 bg-yellow-400 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow">Coming Soon</span>}
+          </button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl relative z-10">
+          {houseTypes[houseTab].map((card, idx) => (
+            <div
+              key={card.title}
+              className="bg-white rounded-2xl shadow-lg p-6 flex flex-col border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-lime-400 transition-all duration-300 group cursor-pointer relative overflow-hidden focus-within:ring-2 focus-within:ring-lime-400"
+              tabIndex={0}
+              aria-expanded={expandedCard === idx}
+              onClick={() => setExpandedCard(expandedCard === idx ? null : idx)}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setExpandedCard(expandedCard === idx ? null : idx); }}
             >
-              Launch 3D Viewer
-            </button>
-          </div>
+              {/* Badge */}
+              <span className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow ${card.badgeColor} animate-pulse`}>{card.badge}</span>
+              {/* Icon */}
+          
+              <Image src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" width={320} height={160} />
+              <h3 className="font-bold text-xl text-gray-900 mb-1 mt-2">{card.title}</h3>
+              <div className="text-base text-gray-500 mb-1">Starting from {card.price}</div>
+              {/* Feature list */}
+              <ul className="mb-3 mt-2 text-sm text-gray-700 space-y-1">
+                {card.features.map((f, i) => (
+                  <li key={i} className="flex items-center gap-2"><span className="text-lime-400">•</span> {f}</li>
+                ))}
+              </ul>
+              {/* Expandable details */}
+              <button
+                className="text-green-700 text-xs font-semibold underline mb-2 self-start focus:outline-none"
+                tabIndex={0}
+                aria-controls={`details-${idx}`}
+                aria-expanded={expandedCard === idx}
+                onClick={e => { e.stopPropagation(); setExpandedCard(expandedCard === idx ? null : idx); }}
+              >
+                {expandedCard === idx ? 'Hide Details' : 'Learn More'}
+              </button>
+              <div
+                id={`details-${idx}`}
+                className={`transition-all duration-300 overflow-hidden text-gray-600 text-sm ${expandedCard === idx ? 'max-h-32 opacity-100 mb-2' : 'max-h-0 opacity-0'}`}
+                aria-hidden={expandedCard !== idx}
+              >
+                {card.details}
+              </div>
+              <button className="bg-lime-400 text-green-900 font-semibold px-4 py-2 rounded shadow hover:bg-lime-300 hover:scale-105 transition-all duration-200 mt-auto">View Details</button>
+            </div>
+          ))}
         </div>
-      </section> 
+      </section>
 
-      {/* Section: Testimonials */}
+        {/* Section: Testimonials */}
       <section className="relative z-10 flex flex-col items-center justify-center py-20 bg-gradient-to-b from-white to-green-50">
         <div className="mb-4 text-green-700 font-bold tracking-widest text-sm text-center uppercase">Customer Stories</div>
         <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 text-center mb-4">What Our <span className="text-green-700">Homeowners Say</span></h2>
@@ -1870,387 +2280,6 @@ export default function Home() {
             <div className="text-gray-700 font-medium">Warranty</div>
           </div>
         </div>
-      </section>
-
-      {/* Section: Sustainable Living CTA */}
-      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-gradient-to-br from-green-700 via-green-800 to-lime-700 overflow-hidden">
-        {/* Decorative Blurred Glowing Shapes */}
-        <div className="absolute -top-16 -left-16 w-72 h-72 bg-lime-400 opacity-30 rounded-full filter blur-3xl z-0 animate-pulse-slow" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-green-500 opacity-20 rounded-full filter blur-2xl z-0 animate-pulse-slower" />
-        <div className="absolute top-1/2 left-1/2 w-96 h-40 bg-lime-200 opacity-20 rounded-full filter blur-2xl z-0 -translate-x-1/2 -translate-y-1/2" />
-        {/* Decorative Leaf Icon */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-10 pointer-events-none">
-          <svg width="220" height="120" viewBox="0 0 220 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="110" cy="60" rx="100" ry="50" fill="#A3E635" />
-          </svg>
-        </div>
-        <div className="max-w-5xl w-full flex flex-col md:flex-row items-center justify-between gap-8 bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl py-12 px-6 sm:px-14 border border-green-800 relative z-10">
-          <div className="flex-1 mb-6 md:mb-0">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="bg-lime-400/30 rounded-full p-2"><svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" stroke="#A3E635" strokeWidth="2"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="#A3E635" strokeWidth="2"/></svg></span>
-              <span className="text-lime-200 font-semibold tracking-wider text-base">SUSTAINABLE LIVING</span>
-            </div>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 drop-shadow">Ready to Start Your Sustainable Living Journey?</h3>
-            <p className="text-green-100 mb-4 text-lg">Schedule a consultation and get a personalized quote for your dream eco-home today.</p>
-            <div className="text-xs text-lime-200 font-medium bg-lime-400/10 rounded-full px-3 py-1 inline-block mb-2">100% Free Consultation</div>
-          </div>
-          {/* Improved Form Layout */}
-          <form className="flex flex-col sm:flex-row gap-3 items-center w-full max-w-md">
-            <input type="email" placeholder="Your Email" className="flex-1 px-5 py-3 rounded-l-lg border border-green-200 bg-white text-green-900 shadow focus:outline-none focus:ring-2 focus:ring-lime-300 transition-all duration-200 text-base min-w-[180px]" />
-            <button className="bg-lime-400 text-green-900 font-bold px-7 py-3 rounded-r-lg shadow-lg hover:bg-lime-300 hover:scale-105 transition-all duration-200 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-lime-400 text-base">Request a Quote</button>
-          </form>
-        </div>
-      </section>
-
-      {/* Add keyframes for slow pulse animation in your global CSS if not present: */}
-      {/*
-      @keyframes pulse-slow { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.5; } }
-      .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
-      @keyframes pulse-slower { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.35; } }
-      .animate-pulse-slower { animation: pulse-slower 10s ease-in-out infinite; }
-      */}
-
-      {/* Section: Choose Your Perfect Dome */}
-      <section className="relative z-20 flex flex-col items-center justify-center py-16 bg-white">
-        <div className="mb-2 text-green-700 font-semibold tracking-widest text-sm text-center">CUSTOMIZABLE ECO-LIVING</div>
-        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 text-center">Choose Your Perfect Dome</h2>
-        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">
-          Select your ideal dome size and customize with add-ons like decks, pergolas, pools, and outdoor kitchens. Start with a base model and build your dream eco-home with the features that matter most to you.
-        </p>
-        {/* Carousel Implementation */}
-        <div className="relative w-full max-w-6xl mb-8 px-2 sm:px-0">
-          {/* Carousel Arrows */}
-          <button
-            className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-lime-200 text-green-700 rounded-full shadow p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ left: '-2.5rem' }}
-            onClick={() => setCarouselIndex((prev) => Math.max(prev - visibleCards, 0))}
-            disabled={carouselIndex === 0}
-            aria-label="Previous domes"
-          >
-            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </button>
-          <button
-            className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-lime-200 text-green-700 rounded-full shadow p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ right: '-2.5rem' }}
-            onClick={() => setCarouselIndex((prev) => Math.min(prev + visibleCards, domes.length - visibleCards))}
-            disabled={carouselIndex >= domes.length - visibleCards}
-            aria-label="Next domes"
-          >
-            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </button>
-          {/* Carousel Cards */}
-          <div className="overflow-x-hidden">
-            <div
-              className="flex transition-transform duration-500"
-              style={{ transform: `translateX(-${(carouselIndex * (100 / visibleCards))}%)` }}
-            >
-              {domes.map((dome) => (
-                <div
-                  key={dome.title}
-                  className={`bg-white rounded-xl shadow p-4 flex flex-col border border-gray-100 relative transition-transform duration-200 group min-w-0${visibleCards === 1 ? '' : ' mx-2'}`}
-                  style={{ flex: `0 0 ${100 / visibleCards}%`, maxWidth: `${100 / visibleCards}%` }}
-                >
-                  <Image src={dome.img} alt={dome.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" width={320} height={160} />
-                  <span className="absolute top-4 right-4 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow m-[3px]">Options</span>
-                  <div className="text-sm text-gray-500 mb-1">{dome.size} · {dome.people}</div>
-                  <h3 className="font-bold text-xl text-gray-900 mb-1">{dome.title}</h3>
-                  <div className="text-sm bg-gray-100 text-gray-700 rounded px-2 py-1 inline-block mb-2">Base Model</div>
-                  <div className="text-base mb-2 text-gray-700 whitespace-pre-line">Customizable with:\n{dome.features}</div>
-                  <div className="font-semibold text-green-700 mb-2">Starting from <span className="text-gray-900">{dome.price}</span></div>
-                  <button
-                    className="bg-green-700 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-800 hover:scale-105 transition-all duration-200 mt-auto focus:outline-none focus:ring-2 focus:ring-lime-400"
-                    onClick={() => { setSelectedDome(dome); setModalOpen(true); }}
-                  >
-                    Customize & View Details
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Carousel Dots */}
-          <div className="flex justify-center gap-2 mt-4">
-            {Array.from({ length: Math.ceil(domes.length / visibleCards) }).map((_, i) => (
-              <button
-                key={i}
-                className={`w-3 h-3 rounded-full ${carouselIndex / visibleCards === i ? 'bg-lime-400 scale-125' : 'bg-gray-300'} transition-all`}
-                onClick={() => setCarouselIndex(i * visibleCards)}
-                aria-label={`Go to domes slide ${i + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-        <DomeDetailsModal open={modalOpen} onClose={() => setModalOpen(false)} dome={selectedDome} />
-        <ThreeDViewModal />
-        <div className="text-gray-500 text-base text-center mb-4">
-          All dome models include our signature eco-friendly features: solar power, rainwater collection, and sustainable materials.
-        </div>
-        <button className="bg-green-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Schedule a Consultation</button>
-      </section>
-
-      {/* Section: Domes Designed for Your Environment */}
-      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-white">
-        <div className="mb-2 text-green-700 font-semibold tracking-widest text-sm text-center">LOCATION-SPECIFIC DESIGN</div>
-        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 text-center">Domes Designed for Your Environment</h2>
-        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">Each location presents unique challenges and opportunities. Our specialized dome designs are optimized for specific environments, ensuring perfect harmony with your chosen setting.</p>
-        {/* Carousel Implementation */}
-        <div className="relative w-full max-w-6xl mb-8 px-2 sm:px-0">
-          {/* Carousel Arrows */}
-          <button
-            className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-lime-200 text-green-700 rounded-full shadow p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ left: '-2.5rem' }}
-            onClick={() => setEnvCarouselIndex((prev) => Math.max(prev - envVisibleCards, 0))}
-            disabled={envCarouselIndex === 0}
-            aria-label="Previous environment domes"
-          >
-            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </button>
-          <button
-            className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-lime-200 text-green-700 rounded-full shadow p-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ right: '-2.5rem' }}
-            onClick={() => setEnvCarouselIndex((prev) => Math.min(prev + envVisibleCards, envDomes.length - envVisibleCards))}
-            disabled={envCarouselIndex >= envDomes.length - envVisibleCards}
-            aria-label="Next environment domes"
-          >
-            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </button>
-          {/* Carousel Cards */}
-          <div className="overflow-x-hidden">
-            <div
-              className="flex transition-transform duration-500"
-              style={{ transform: `translateX(-${(envCarouselIndex * (100 / envVisibleCards))}%)` }}
-            >
-              {envDomes.map((card) => (
-                <div
-                  key={card.title}
-                  className={`bg-white rounded-xl shadow p-4 flex flex-col border border-gray-100 relative transition-transform duration-200 group min-w-0${envVisibleCards === 1 ? '' : ' mx-2'}`}
-                  style={{ flex: `0 0 ${100 / envVisibleCards}%`, maxWidth: `${100 / envVisibleCards}%` }}
-                >
-                  <Image src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3" width={320} height={160} />
-                  <span className={card.badgeClass + ' m-[3px]'}>{card.badge}</span>
-                  <div className="text-sm text-gray-500 mb-1 flex items-center gap-1">{card.icon}{card.location}</div>
-                  <h3 className="font-bold text-xl text-gray-900 mb-1">{card.title}</h3>
-                  <p className="text-base mb-2 text-gray-600">{card.description}</p>
-                  <div className={card.priceClass}>{card.priceLabel} <span className="font-semibold">{card.price}</span></div>
-                  <div className="text-sm text-gray-600 mb-3">
-                    {card.features.map((f, i) => (
-                      <div className="flex items-center gap-2 mb-1" key={i}><span className={f.iconClass}>✓</span> {f.text}</div>
-                    ))}
-                  </div>
-                  <button className="bg-green-700 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-800 transition-all duration-200 mt-auto">{card.button}</button>
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Carousel Dots */}
-          <div className="flex justify-center gap-2 mt-4">
-            {Array.from({ length: Math.ceil(envDomes.length / envVisibleCards) }).map((_, i) => (
-              <button
-                key={i}
-                className={`w-3 h-3 rounded-full ${envCarouselIndex / envVisibleCards === i ? 'bg-lime-400 scale-125' : 'bg-gray-300'} transition-all`}
-                onClick={() => setEnvCarouselIndex(i * envVisibleCards)}
-                aria-label={`Go to environment domes slide ${i + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="text-gray-500 text-base text-center mb-4">
-          Need a dome for a specific location or climate? Our design team can create custom solutions.
-        </div>
-        <button className="bg-green-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Request Custom Design</button>
-      </section>
-
-      {/* Section: Investment in Your Future (Pricing) */}
-      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-white">
-        <div className="mb-2 text-green-700 font-semibold tracking-widest text-sm text-center">TRANSPARENT PRICING</div>
-        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 text-center">Investment in Your Future</h2>
-        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">Our eco-domes are an investment in sustainable living that pays dividends through energy savings, increased property value, and reduced environmental impact.</p>
-        <div className="flex gap-4 mb-8">
-          <button className="bg-green-100 text-green-800 font-semibold px-4 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Base Price</button>
-          <button className="bg-white text-green-800 font-semibold px-4 py-2 rounded shadow border border-green-200 hover:bg-green-50 transition-all duration-200">With Energy Savings</button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mb-8">
-          {/* Starter Dome */}
-          <div className="bg-white rounded-xl shadow p-8 flex flex-col border border-gray-100">
-            <div className="font-bold text-xl text-gray-900 mb-1">Starter Dome</div>
-            <div className="text-base text-gray-500 mb-4">Perfect for individuals or couples looking for a sustainable living home.</div>
-            <div className="text-3xl font-extrabold text-green-700 mb-1">$89k</div>
-            <div className="text-xs text-gray-400 mb-4">Base price: $89,000</div>
-            <ul className="mb-6 text-base text-gray-700 space-y-2">
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> 600-900 sq ft living space</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Basic solar panel system</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Rainwater collection system</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Eco-friendly materials</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Standard insulation package</li>
-            </ul>
-            <button className="bg-green-700 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-800 transition-all duration-200 mt-auto">Request Quote</button>
-          </div>
-          {/* Family Dome (Most Popular) */}
-          <div className="bg-white rounded-xl shadow p-8 flex flex-col border-2 border-green-700 relative">
-            <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-green-700 text-white text-xs font-semibold px-4 py-1 rounded-full">Most Popular</div>
-            <div className="font-bold text-xl text-gray-900 mb-1 mt-4">Family Dome</div>
-            <div className="text-base text-gray-500 mb-4">Ideal for small families with space for comfortable sustainable living.</div>
-            <div className="text-3xl font-extrabold text-green-700 mb-1">$149k</div>
-            <div className="text-xs text-gray-400 mb-4">Base price: $149,000</div>
-            <ul className="mb-6 text-base text-gray-700 space-y-2">
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> 800-1200 sq ft living space</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Advanced solar array</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Complete water management system</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Premium eco-friendly materials</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Enhanced insulation package</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Smart home integration</li>
-            </ul>
-            <button className="bg-green-700 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-800 transition-all duration-200 mt-auto">Request Quote</button>
-          </div>
-          {/* Luxury Dome */}
-          <div className="bg-white rounded-xl shadow p-8 flex flex-col border border-gray-100">
-            <div className="font-bold text-xl text-gray-900 mb-1">Luxury Dome</div>
-            <div className="text-base text-gray-500 mb-4">Our premium offering with maximum space and cutting-edge sustainability features.</div>
-            <div className="text-3xl font-extrabold text-green-700 mb-1">$249k</div>
-            <div className="text-xs text-gray-400 mb-4">Base price: $249,000</div>
-            <ul className="mb-6 text-base text-gray-700 space-y-2">
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> 1500-2000+ sq ft living space</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Premium full battery system</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Advanced water reclamation</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Maximum insulation package</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Full smart home ecosystem</li>
-              <li className="flex items-center gap-2"><span className="text-green-500">✔</span> Customizable add-on packages included</li>
-            </ul>
-            <button className="bg-green-700 text-white font-semibold px-4 py-2 rounded shadow hover:bg-green-800 transition-all duration-200 mt-auto">Request Quote</button>
-          </div>
-        </div>
-        <div className="text-gray-500 text-sm text-center mb-4 max-w-2xl mx-auto">
-          All prices are starting points. Final pricing depends on specific customizations, location, and additional features. Contact us for a personalized quote tailored to your needs and location.
-        </div>
-        <button className="bg-green-100 text-green-800 font-semibold px-6 py-2 rounded shadow hover:bg-green-200 transition-all duration-200">Get Custom Quote</button>
-      </section>
-
-      {/* Section: Explore Our House Types */}
-      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-gradient-to-b from-white to-green-50 overflow-hidden">
-        {/* Decorative background pattern */}
-        <div className="absolute z-10 inset-0 pointer-events-none select-none opacity-30 z-0">
-          <svg width="100%" height="100%" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            <ellipse cx="300" cy="100" rx="320" ry="80" fill="#bbf7d0" />
-            <ellipse cx="300" cy="120" rx="220" ry="60" fill="#f0fdf4" />
-          </svg>
-        </div>
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-2 relative z-10">Explore Our House Types</h2>
-        <div className="text-green-700 text-base font-semibold mb-2 text-center relative z-10">Modern designs for every lifestyle</div>
-        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg relative z-10">Beyond our signature dome homes, we offer beautiful A-Frame and Box house options. Each design combines modern architecture with sustainable living principles.</p>
-        {/* House type selector with animated underline */}
-        <div className="flex w-full max-w-xl mb-8 relative z-10" role="tablist" aria-label="House Types">
-          <button
-            role="tab"
-            aria-selected={houseTab === 'aFrame'}
-            tabIndex={houseTab === 'aFrame' ? 0 : -1}
-            className={`flex-1 px-4 py-2 font-semibold rounded-l shadow border-r border-green-200 transition-all duration-200 focus:outline-none relative ${houseTab === 'aFrame' ? 'bg-green-700 text-white' : 'bg-green-100 text-green-800 hover:bg-green-200'}`}
-            onClick={() => { setHouseTab('aFrame'); setExpandedCard(null); }}
-          >
-            <span className="inline-flex items-center gap-2"><svg width="20" height="20" fill="none"><polygon points="10,2 18,18 2,18" fill="#bef264" /></svg> A-Frame Houses</span>
-            {houseTab === 'aFrame' && <span className="absolute left-0 bottom-0 w-full h-1 bg-lime-400 rounded transition-all duration-300" />}
-          </button>
-          <button
-            role="tab"
-            aria-selected={houseTab === 'box'}
-            tabIndex={houseTab === 'box' ? 0 : -1}
-            className={`flex-1 px-4 py-2 font-semibold rounded-r shadow transition-all duration-200 focus:outline-none relative ${houseTab === 'box' ? 'bg-green-700 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
-            onClick={() => { setHouseTab('box'); setExpandedCard(null); }}
-          >
-            <span className="inline-flex items-center gap-2"><svg width="20" height="20" fill="none"><rect x="4" y="4" width="12" height="12" rx="2" fill="#a3e635" /></svg> Box Houses</span>
-            {houseTab === 'box' && <span className="absolute left-0 bottom-0 w-full h-1 bg-lime-400 rounded transition-all duration-300" />}
-            {houseTab !== 'box' && <span className="absolute top-1 right-3 bg-yellow-400 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow">Coming Soon</span>}
-          </button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl relative z-10">
-          {houseTypes[houseTab].map((card, idx) => (
-            <div
-              key={card.title}
-              className="bg-white rounded-2xl shadow-lg p-6 flex flex-col border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-lime-400 transition-all duration-300 group cursor-pointer relative overflow-hidden focus-within:ring-2 focus-within:ring-lime-400"
-              tabIndex={0}
-              aria-expanded={expandedCard === idx}
-              onClick={() => setExpandedCard(expandedCard === idx ? null : idx)}
-              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setExpandedCard(expandedCard === idx ? null : idx); }}
-            >
-              {/* Badge */}
-              <span className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow ${card.badgeColor} animate-pulse`}>{card.badge}</span>
-              {/* Icon */}
-          
-              <Image src={card.img} alt={card.title} className="rounded-lg h-40 w-full object-cover mb-3 group-hover:brightness-95 transition" width={320} height={160} />
-              <h3 className="font-bold text-xl text-gray-900 mb-1 mt-2">{card.title}</h3>
-              <div className="text-base text-gray-500 mb-1">Starting from {card.price}</div>
-              {/* Feature list */}
-              <ul className="mb-3 mt-2 text-sm text-gray-700 space-y-1">
-                {card.features.map((f, i) => (
-                  <li key={i} className="flex items-center gap-2"><span className="text-lime-400">•</span> {f}</li>
-                ))}
-              </ul>
-              {/* Expandable details */}
-              <button
-                className="text-green-700 text-xs font-semibold underline mb-2 self-start focus:outline-none"
-                tabIndex={0}
-                aria-controls={`details-${idx}`}
-                aria-expanded={expandedCard === idx}
-                onClick={e => { e.stopPropagation(); setExpandedCard(expandedCard === idx ? null : idx); }}
-              >
-                {expandedCard === idx ? 'Hide Details' : 'Learn More'}
-              </button>
-              <div
-                id={`details-${idx}`}
-                className={`transition-all duration-300 overflow-hidden text-gray-600 text-sm ${expandedCard === idx ? 'max-h-32 opacity-100 mb-2' : 'max-h-0 opacity-0'}`}
-                aria-hidden={expandedCard !== idx}
-              >
-                {card.details}
-              </div>
-              <button className="bg-lime-400 text-green-900 font-semibold px-4 py-2 rounded shadow hover:bg-lime-300 hover:scale-105 transition-all duration-200 mt-auto">View Details</button>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Section: Dome Gallery */}
-      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-gray-50 overflow-hidden">
-        {/* Decorative background pattern */}
-        <div className="absolute inset-0 pointer-events-none select-none opacity-20 z-0">
-          <svg width="100%" height="100%" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            <ellipse cx="300" cy="100" rx="320" ry="80" fill="#bbf7d0" />
-            <ellipse cx="300" cy="120" rx="220" ry="60" fill="#f0fdf4" />
-          </svg>
-        </div>
-        <div className="mb-2 text-gray-500 font-semibold tracking-widest text-sm text-center relative z-10">OUR DESIGNS</div>
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-2 relative z-10">Dome Gallery</h2>
-        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg relative z-10">Explore our beautiful dome designs and configurations that blend seamlessly with different natural environments.</p>
-        {/* Improved Card Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-5xl relative z-10">
-          {[
-            { src: "/main/domy/d6/img.jpg", title: "Compact Studio" },
-            { src: "/main/domy/d7/img-1.jpg", title: "Current Model" },
-            { src: "/main/domy/d8/img-1.jpg", title: "Two-Level Haven" },
-            { src: "/main/domy/d7/img-2.jpg", title: "Dome Interior" },
-            { src: "/main/domy/d9/img-1.jpg", title: "Family Dome" },
-            { src: "/main/domy/d10/img-1.jpg", title: "Grand Dome" },
-          ].map((img) => (
-            <div
-              key={img.src}
-              className="relative group rounded-2xl overflow-hidden shadow-lg bg-white border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-              // onClick={() => { setGalleryModal({ open: true, img }); }} // Modal logic stub
-              tabIndex={0}
-              aria-label={`View ${img.title}`}
-            >
-              <Image
-                src={img.src}
-                alt={img.title}
-                width={320}
-                height={224}
-                className="object-cover w-full h-56 transition-transform duration-300 group-hover:scale-105 group-hover:brightness-90"
-              />
-              {/* Overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-green-900/70 via-green-700/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                <div className="text-white text-lg font-bold drop-shadow mb-1">{img.title}</div>
-                <div className="text-lime-200 text-xs font-medium drop-shadow">Click to enlarge</div>
-              </div>
-            </div>
-          ))}
-        </div>
-        {/* Modal logic would go here (stubbed for now) */}
       </section>
 
       {/* Section: Where Our Domes Are Available */}
@@ -2458,52 +2487,196 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer matching screenshot - improved UI */}
-      <footer className="bg-green-800 text-gray-100 pt-12 pb-4 mt-8">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
-          {/* Brand & Social */}
-          <div>
-            <div className="font-extrabold text-xl mb-2 tracking-tight">RomyDomy</div>
-            <div className="text-sm mb-4 text-gray-200">Sustainable and <span className="text-lime-200 font-semibold">luxury</span> eco-friendly dome homes for the future.</div>
-            <div className="flex gap-3 mt-3">
-              <a href="#" aria-label="Facebook" className="rounded-full p-2 hover:bg-green-700 transition"><svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.522-4.477-10-10-10S2 6.478 2 12c0 5 3.657 9.127 8.438 9.877v-6.987h-2.54v-2.89h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.242 0-1.632.771-1.632 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.127 22 17 22 12z"/></svg></a>
-              <a href="#" aria-label="Twitter" className="rounded-full p-2 hover:bg-green-700 transition"><svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557a9.93 9.93 0 0 1-2.828.775 4.932 4.932 0 0 0 2.165-2.724c-.951.564-2.005.974-3.127 1.195A4.92 4.92 0 0 0 16.616 3c-2.73 0-4.942 2.21-4.942 4.936 0 .387.045.763.127 1.124C7.728 8.816 4.1 6.884 1.671 3.965c-.423.722-.666 1.561-.666 2.475 0 1.708.87 3.216 2.188 4.099a4.904 4.904 0 0 1-2.237-.616c-.054 2.281 1.581 4.415 3.949 4.89a4.936 4.936 0 0 1-2.224.084c.627 1.956 2.444 3.377 4.6 3.417A9.867 9.867 0 0 1 0 21.543a13.94 13.94 0 0 0 7.548 2.209c9.057 0 14.009-7.496 14.009-13.986 0-.213-.005-.425-.014-.636A9.936 9.936 0 0 0 24 4.557z"/></svg></a>
-              <a href="#" aria-label="Instagram" className="rounded-full p-2 hover:bg-green-700 transition"><svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm4.25 3.25a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5zm6.25.75a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg></a>
+      {/* Professional Footer with Roomydomy Logo */}
+      <footer className="bg-gradient-to-br from-black via-gray-900 to-black text-white">
+        {/* Main Footer Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+            {/* Company Info with Logo */}
+            <div className="lg:col-span-1">
+              <div className="flex items-center gap-3 mb-6">
+                
+                   <Image src="/logo.png" alt="Roomydomy Logo" width={160} height={75} />
+     
+              </div>
+              <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                Pioneering the future of sustainable living with innovative dome homes that harmonize luxury, comfort, and environmental responsibility.
+              </p>
+              <div className="flex gap-4">
+                <a href="#" className="w-10 h-10 bg-gradient-to-br from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 rounded-lg flex items-center justify-center transition-all duration-200 shadow-lg" aria-label="Facebook">
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M22 12c0-5.522-4.477-10-10-10S2 6.478 2 12c0 5 3.657 9.127 8.438 9.877v-6.987h-2.54v-2.89h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.242 0-1.632.771-1.632 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.127 22 17 22 12z"/>
+                  </svg>
+                </a>
+                <a href="#" className="w-10 h-10 bg-gradient-to-br from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 rounded-lg flex items-center justify-center transition-all duration-200 shadow-lg" aria-label="Twitter">
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                  </svg>
+                </a>
+                <a href="#" className="w-10 h-10 bg-gradient-to-br from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 rounded-lg flex items-center justify-center transition-all duration-200 shadow-lg" aria-label="Instagram">
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
+                <a href="#" className="w-10 h-10 bg-gradient-to-br from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 rounded-lg flex items-center justify-center transition-all duration-200 shadow-lg" aria-label="LinkedIn">
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            {/* Products & Services */}
+            <div>
+              <h4 className="text-lg font-bold text-gray-200 mb-6">Products & Services</h4>
+              <ul className="space-y-3 text-sm">
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Dome Homes
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Custom Design
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Installation
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Maintenance
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Financing
+                </a></li>
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div>
+              <h4 className="text-lg font-bold text-gray-200 mb-6">Company</h4>
+              <ul className="space-y-3 text-sm">
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  About Us
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Our Mission
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Sustainability
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Careers
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Press
+                </a></li>
+              </ul>
+            </div>
+
+            {/* Support & Legal */}
+            <div>
+              <h4 className="text-lg font-bold text-gray-200 mb-6">Support & Legal</h4>
+              <ul className="space-y-3 text-sm">
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Contact Support
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Privacy Policy
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Terms of Service
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Cookie Policy
+                </a></li>
+                <li><a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200 flex items-center gap-2">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" className="text-gray-400">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Accessibility
+                </a></li>
+              </ul>
             </div>
           </div>
-          {/* Quick Links */}
-          <div>
-            <div className="font-bold mb-3 text-lg text-lime-200">Quick Links</div>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#features" className="hover:text-lime-300 transition">Features</a></li>
-              <li><a href="#amenities" className="hover:text-lime-300 transition">Amenities</a></li>
-              <li><a href="#gallery" className="hover:text-lime-300 transition">Gallery</a></li>
-              <li><a href="#contact" className="hover:text-lime-300 transition">Contact</a></li>
-            </ul>
-          </div>
-          {/* Sustainability */}
-          <div>
-            <div className="font-bold mb-3 text-lg text-lime-200">Sustainability</div>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#approach" className="hover:text-lime-300 transition">Our Approach</a></li>
-              <li><a href="#materials" className="hover:text-lime-300 transition">Materials</a></li>
-              <li><a href="#energy" className="hover:text-lime-300 transition">Energy Systems</a></li>
-              <li><a href="#water" className="hover:text-lime-300 transition">Water Management</a></li>
-            </ul>
-          </div>
-          {/* Legal */}
-          <div>
-            <div className="font-bold mb-3 text-lg text-lime-200">Legal</div>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-lime-300 transition">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-lime-300 transition">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-lime-300 transition">Cookie Policy</a></li>
-            </ul>
+        </div>
+
+        {/* Newsletter Signup */}
+        <div className="border-t border-gray-800/50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+              <div className="flex-1">
+                <h4 className="text-lg font-bold text-gray-200 mb-2">Stay Updated</h4>
+                <p className="text-gray-300 text-sm">Get the latest news about sustainable living and dome home innovations.</p>
+              </div>
+              <div className="flex gap-3 w-full lg:w-auto">
+                <input 
+                  type="email" 
+                  placeholder="Enter your email" 
+                  className="flex-1 lg:w-80 px-4 py-3 bg-gradient-to-r from-gray-900 to-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent shadow-lg"
+                />
+                <button className="px-6 py-3 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-900 font-semibold rounded-lg hover:from-gray-200 hover:to-gray-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 shadow-lg">
+                  Subscribe
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="border-t border-green-700/60 mt-10 pt-4 flex flex-col md:flex-row justify-between items-center text-xs text-gray-200 px-4 max-w-7xl mx-auto">
-          <div className="mb-2 md:mb-0">© 2025 RomyDomy. All rights reserved.</div>
-          <div>Designed for Prasanga.</div>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-gray-800/50 bg-gradient-to-r from-gray-900/50 to-black/50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="flex items-center gap-4 text-sm text-gray-300">
+                <span>© 2025 Roomydomy. All rights reserved.</span>
+                <span className="hidden sm:inline">•</span>
+                <span className="hidden sm:inline">Designed for Prasanga</span>
+              </div>
+              <div className="flex items-center gap-6 text-sm">
+                <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">Sitemap</a>
+                <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">Accessibility</a>
+                <a href="#" className="text-gray-300 hover:text-gray-100 transition-colors duration-200">Security</a>
+              </div>
+            </div>
+          </div>
         </div>
       </footer>
 
