@@ -1,6 +1,7 @@
 "use client"
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import TabComponent from './components/TabComponent';
 
 // Type for dome data
 interface Dome {
@@ -448,9 +449,10 @@ function DomeDetailsModal({ open, onClose, dome, setIs3DModalOpen }: { open: boo
         )}
         {tab === 'customize' && (
           <div className="px-8 py-10">
-            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">Customize Your Dome</h2>
-            <p className="text-gray-600 mb-8">Personalize your dome with premium add-ons and upgrades. Each option is carefully selected to enhance your sustainable living experience.</p>
-            {/* Decks */}
+
+          <TabComponent exteriorContent={<div>
+            
+             {/* Decks */}
             <div className="bg-green-50/40 border border-green-100 rounded-xl p-6 mb-8">
               <div className="text-xl font-extrabold text-green-800 mb-4">Decks</div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -545,6 +547,827 @@ function DomeDetailsModal({ open, onClose, dome, setIs3DModalOpen }: { open: boo
                 </div>
               </div>
             </div>
+
+                    </div>} interiorContent={<div>
+
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">Customize Your Dome</h2>
+            <p className="text-gray-600 mb-8">Select individual items to customize your interior. Each item can be added to your cart separately.</p>
+
+            {/* Interior Package Categories */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              {/* Standard Package */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="text-center mb-6">
+                  <div className="bg-blue-100 rounded-full p-3 mx-auto w-16 h-16 flex items-center justify-center mb-4">
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path d="M12 2L2 7v7c0 5 4 7 9 7s9-2 9-7V7l-9-5Z" stroke="#3b82f6" strokeWidth="2"/>
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Standard Package</h3>
+                  <p className="text-gray-600 text-sm">Essential comfort for everyday living</p>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Kitchen & Dining</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Basic kitchen cabinets</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$2,500</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Stainless steel sink</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$800</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">4-burner gas stove</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$1,200</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Refrigerator</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$1,500</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Dining table & chairs</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$1,000</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Living Area</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Comfortable sofa</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$2,200</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Coffee table</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$600</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">TV stand</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$400</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Floor lamps</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$300</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Bedrooms</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Queen bed with frame</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$1,800</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Bedside tables</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$400</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Wardrobe</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$1,200</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Bedding set</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$500</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Bathroom</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Shower enclosure</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$1,500</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Vanity with sink</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$800</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Toilet</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$400</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" />
+                          <span className="text-sm font-medium text-gray-900">Towel racks</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-blue-600">$200</span>
+                          <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Comfort Package */}
+              <div className="bg-white rounded-xl border-2 border-green-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200 relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-green-600 text-white px-4 py-1 rounded-full text-sm font-semibold">Most Popular</span>
+                </div>
+                <div className="text-center mb-6">
+                  <div className="bg-green-100 rounded-full p-3 mx-auto w-16 h-16 flex items-center justify-center mb-4">
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path d="M12 2L2 7v7c0 5 4 7 9 7s9-2 9-7V7l-9-5Z" stroke="#22c55e" strokeWidth="2"/>
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Comfort Package</h3>
+                  <p className="text-gray-600 text-sm">Enhanced comfort with premium features</p> 
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Kitchen & Dining</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Premium kitchen cabinets</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$4,500</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Granite countertops</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$3,200</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">6-burner gas stove</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$2,800</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Built-in dishwasher</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$1,500</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Wine refrigerator</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$1,200</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Designer dining set</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$2,500</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Living Area</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Sectional sofa</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$3,500</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Entertainment center</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$1,800</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart TV</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$1,200</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Ambient lighting system</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$800</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Sound system</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$1,500</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Bedrooms</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">King bed with premium frame</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$2,800</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Memory foam mattress</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$1,500</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Walk-in closet</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$2,200</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Premium bedding</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$800</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart blinds</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$600</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Bathroom</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Walk-in shower</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$2,500</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Double vanity</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$1,500</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Heated towel rack</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$400</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart toilet</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$1,200</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
+                          <span className="text-sm font-medium text-gray-900">Premium fixtures</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-green-600">$800</span>
+                          <button className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Premium Package */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-200">
+                <div className="text-center mb-6">
+                  <div className="bg-purple-100 rounded-full p-3 mx-auto w-16 h-16 flex items-center justify-center mb-4">
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path d="M12 2L2 7v7c0 5 4 7 9 7s9-2 9-7V7l-9-5Z" stroke="#8b5cf6" strokeWidth="2"/>
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Premium Package</h3>
+                  <p className="text-gray-600 text-sm">Luxury living with smart technology</p> 
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Kitchen & Dining</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Custom kitchen cabinets</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$8,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Quartz countertops</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$5,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Professional range</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$4,800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart refrigerator</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$3,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Wine cellar</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$2,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Butler is pantry</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$3,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Designer dining room</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$4,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Living Area</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Custom furniture</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$6,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Home theater system</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$3,800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart home hub</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$1,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Automated lighting</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$1,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Climate control</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$2,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Security system</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$1,800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b border-gray-100 pb-3">
+                    <h4 className="font-semibold text-gray-900 mb-3">Bedrooms</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">California king bed</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$4,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Adjustable base</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$2,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Custom closet system</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$3,800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Luxury bedding</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$1,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart mirrors</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Sleep tracking</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$600</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Bathroom</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Spa shower system</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$4,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Freestanding tub</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$3,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Double vanity with makeup area</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$2,800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Smart toilet with bidet</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$2,200</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Heated floors</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$1,800</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500" />
+                          <span className="text-sm font-medium text-gray-900">Steam room</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold text-purple-600">$3,500</span>
+                          <button className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">Add to Cart</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Features */}
+            <div className="bg-green-50/40 border border-green-100 rounded-xl p-6 mb-8">
+              <h3 className="text-xl font-extrabold text-green-800 mb-4">All Packages Include</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-green-100 text-green-700 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Professional Installation</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-green-100 text-green-700 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">2-Year Warranty</span>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-green-100 text-green-700 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Free Design Consultation</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-green-100 text-green-700 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Custom Color Options</span>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-green-100 text-green-700 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">Delivery & Setup</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="bg-green-100 text-green-700 rounded-full p-1">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 font-medium">24/7 Support</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>} /> 
           </div>
         )}
         {tab === '3dview' && (
@@ -1876,6 +2699,103 @@ export default function Home() {
       @keyframes pulse-slower { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.35; } }
       .animate-pulse-slower { animation: pulse-slower 10s ease-in-out infinite; }
       */}
+
+      {/* Section: Exterior & Interior Views */}
+      <section className="relative z-10 flex flex-col items-center justify-center py-16 bg-white">
+        <div className="mb-2 text-green-700 font-semibold tracking-widest text-sm text-center">DESIGN PREVIEW</div>
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3 text-center">Exterior & Interior Views</h2>
+        <p className="text-gray-600 text-center max-w-2xl mb-8 text-lg">Explore the stunning exterior design and comfortable interior spaces of our eco-friendly dome homes.</p>
+        
+        <div className="w-full max-w-6xl">
+          <TabComponent
+            exteriorContent={
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                  <Image src="/main/domy/d10/img-1.jpg" alt="Front View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <h3 className="font-bold text-xl text-gray-900 mb-2">Front View</h3>
+                  <p className="text-gray-600 mb-3">Majestic entrance with panoramic windows and sustainable design elements.</p>
+                  <div className="flex items-center gap-2 text-sm text-green-600">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Solar Integration
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                  <Image src="/main/domy/d10/img-2.jpg" alt="Side View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <h3 className="font-bold text-xl text-gray-900 mb-2">Side View</h3>
+                  <p className="text-gray-600 mb-3">Elegant profile showcasing the dome is aerodynamic design and natural materials.</p>
+                  <div className="flex items-center gap-2 text-sm text-green-600">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Weather Resistant
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                  <Image src="/main/domy/d9/img-1.jpg" alt="Aerial View" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <h3 className="font-bold text-xl text-gray-900 mb-2">Aerial View</h3>
+                  <p className="text-gray-600 mb-3">Complete dome structure overview showing the harmonious integration with nature.</p>
+                  <div className="flex items-center gap-2 text-sm text-green-600">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Eco-Friendly Design
+                  </div>
+                </div>
+              </div>
+            }
+            interiorContent={
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                  <Image src="/main/domy/d9/img-2.jpg" alt="Living Area" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <h3 className="font-bold text-xl text-gray-900 mb-2">Living Area</h3>
+                  <p className="text-gray-600 mb-3">Spacious open-concept living space with natural light and sustainable materials.</p>
+                  <div className="flex items-center gap-2 text-sm text-green-600">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Natural Lighting
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                  <Image src="/main/domy/d8/img-1.jpg" alt="Kitchen" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <h3 className="font-bold text-xl text-gray-900 mb-2">Kitchen</h3>
+                  <p className="text-gray-600 mb-3">Modern kitchen with energy-efficient appliances and sustainable countertops.</p>
+                  <div className="flex items-center gap-2 text-sm text-green-600">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Energy Efficient
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-200">
+                  <Image src="/main/domy/d7/img-1.jpg" alt="Bedroom" className="rounded-lg h-48 w-full object-cover mb-4" width={300} height={200} />
+                  <h3 className="font-bold text-xl text-gray-900 mb-2">Bedroom</h3>
+                  <p className="text-gray-600 mb-3">Peaceful bedroom retreat with optimal insulation and natural ventilation.</p>
+                  <div className="flex items-center gap-2 text-sm text-green-600">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M7 7v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Climate Controlled
+                  </div>
+                </div>
+              </div>
+            }
+          />
+        </div>
+        
+        <div className="text-gray-500 text-base text-center mt-8">
+          Experience the perfect blend of exterior beauty and interior comfort in our sustainable dome homes.
+        </div>
+      </section>
 
      
 
